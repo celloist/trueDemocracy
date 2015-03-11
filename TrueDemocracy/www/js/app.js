@@ -5,7 +5,21 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'auth0',
+    'angular-storage',
+    'angular-jwt'])
+
+    .config(function (authProvider) {
+        authProvider.init({
+            domain: 'ronaldvanduren.auth0.com',
+            clientID: 'SLyfg8BYEP9RuyhHX4waO7hpAqEyytfQ',
+            loginStage: 'login'
+        });
+    })
+    .run(function(auth) {
+        // This hooks al auth events to check everything as soon as the app starts
+        auth.hookEvents();
+    })
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -21,7 +35,56 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.run(function($rootScope, auth, store, jwtHelper, $location) {
+        // This events gets triggered on refresh or URL change
+        $rootScope.$on('$locationChangeStart', function() {
+            if (!auth.isAuthenticated) {
+                var token = store.get('token');
+                if (token) {
+                    if (!jwtHelper.isTokenExpired(token)) {
+                        auth.authenticate(store.get('profile'), token);
+                    } else {
+                        auth.refreshIdToken(refreshToken).then(function(idToken) {
+                            store.set('token', idToken);
+                            auth.authenticate(store.get('profile'), idToken);
+                            return idToken;
+                        });
+                    }
+                }
+            }
+        });
+    })
+
+.config(function($stateProvider, $urlRouterProvider, authProvider, $httpProvider,
+                 jwtInterceptorProvider) {
+
+        //Authentication setup
+        authProvider.init({
+            domain: 'ronaldvanduren.auth0.com',
+            clientID: 'FyLTiPLyCtwnGblxCZeiUSQVrCSVTUCb',
+            callbackURL: location.href,
+            loginState: 'login'
+        });
+
+        jwtInterceptorProvider.tokenGetter = function(store, jwtHelper, auth) {
+            var idToken = store.get('token');
+            var refreshToken = store.get('refreshToken');
+            // If no token return null
+            if (!idToken || !refreshToken) {
+                return null;
+            }
+            // If token is expired, get a new one
+            if (jwtHelper.isTokenExpired(idToken)) {
+                return auth.refreshIdToken(refreshToken).then(function(idToken) {
+                    store.set('token', idToken);
+                    return idToken;
+                });
+            } else {
+                return idToken;
+            }
+        };
+
+        $httpProvider.interceptors.push('jwtInterceptor');
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
@@ -29,11 +92,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   // Each state's controller can be found in controllers.js
   $stateProvider
 
+      //Login state
+      .state('login', {
+          url: '/login',
+          templateUrl: 'templates/login.html',
+          controller: 'LoginCtrl'
+      })
+
   // setup an abstract state for the tabs directive
     .state('tab', {
     url: "/tab",
     abstract: true,
-    templateUrl: "templates/tabs.html"
+    templateUrl: "templates/tabs.html",
+          data: {
+              requiresLogin: true
+          }
   })
 
   // Each tab has its own nav history stack:
