@@ -93,4 +93,72 @@ angular.module('starter.services', [])
       return friends[friendId];
     }
   }
+})
+
+.factory('MyPolls', function() {
+
+        var polls = [];
+
+        //Gets all the polls of a specific user
+        //TODO add url when the routes are finished
+        $http.get('url to my own polls')
+            .success(function(data){
+                polls = data;
+            })
+            .error(function(data){
+                console.log(data);
+            });
+
+        return {
+            all : function(){
+                return polls;
+            },
+            remove: function(poll) {
+                //TODO add url when the routes are finished
+                $http.delete('url to delete specific poll')
+                    .success(function(status){
+                        polls.splice(polls.indexOf(poll), 1);
+                    })
+                    .error(function(status){
+                       console.log(status);
+                    });
+            },
+            get : function(pollId){
+                return polls[pollId];
+            }
+        }
+})
+
+.factory('Polls', function() {
+
+        var polls = [];
+
+        //Gets all the polls a specific user voted on
+        //TODO add url when the routes are finished
+        $http.get('url to polls i voted on')
+            .success(function(data){
+                polls = data;
+            })
+            .error(function(data){
+                console.log(data);
+            });
+
+        return {
+            all : function(){
+                return polls;
+            },
+            remove: function(poll) {
+                //TODO add url when the routes are finished
+                $http.delete('url to delete specific poll')
+                    .success(function(status){
+                        polls.splice(polls.indexOf(poll), 1);
+                    })
+                    .error(function(status){
+                        console.log(status);
+                    });
+            },
+            get : function(pollId){
+                return polls[pollId];
+            }
+        }
 });
