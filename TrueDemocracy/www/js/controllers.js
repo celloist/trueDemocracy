@@ -9,8 +9,49 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats, auth) {
+.controller('ChatDetailCtrl', function($scope, $stateParams, Chats, auth, $ionicModal) {
   $scope.chat = Chats.get($stateParams.chatId);
+
+
+        $scope.polls = [];
+
+        // Create and load the Modal
+        $ionicModal.fromTemplateUrl('add-poll.html', function(modal) {
+            $scope.pollModal = modal;
+        }, {
+            scope: $scope,
+            animation: 'slide-in-up'
+        });
+
+        // Called when the form is submitted
+        $scope.addPoll = function(poll) {
+            if (!poll.title && poll.title != "") {
+                $http.post('http://localhost:8080/api/users' + auth.profile.user_id + '/polls', {title: poll.title})
+                    .success(function (data) {
+                        $scope.polls.push({
+                            title: poll.title
+                        });
+                        $scope.pollModal.hide();
+                        poll.title = "";
+                        console.log($scope.polls);
+                        //TODO flash message poll has been created
+                    })
+                    .error(function (data) {
+                        //TODO flash error that something went wrong
+                        console.log(data);
+                    })
+            }
+        };
+
+        // Open our new task modal
+        $scope.newPoll= function() {
+            $scope.pollModal.show();
+        };
+
+        // Close the new task modal
+        $scope.closeNewPoll = function() {
+            $scope.pollModal.hide();
+        };
 })
 
 .controller('FriendsCtrl', function($scope, Friends) {
@@ -30,7 +71,7 @@ angular.module('starter.controllers', [])
      auth.signout();
      store.remove('profile');
      store.remove('token');
-     $state.go('login')
+     $state.go('login'); //TODO fix redirect when logging out
    }
 })
 
@@ -56,4 +97,52 @@ angular.module('starter.controllers', [])
             // Oops something went wrong during login:
             console.log("There was an error logging in", error);
         });
+    })
+
+    .controller('AddPollCtrl', function($scope, $ionicModal) {
+        // Array to store the movies in
+        $scope.polls = [];
+
+        // Create and load the Modal
+        $ionicModal.fromTemplateUrl('add-poll.html', function(modal) {
+            $scope.pollModal = modal;
+        }, {
+            scope: $scope,
+            animation: 'slide-in-up'
+        });
+
+        // Called when the form is submitted
+        $scope.addPoll = function(poll) {
+            if (!poll.title && poll.title != "") {
+                $http.post('http://localhost:8080/api/users' + auth.profile.user_id + '/polls', {title: poll.title})
+                    .success(function (data) {
+                        $scope.polls.push({
+                            title: poll.title
+                        });
+                        $scope.pollModal.hide();
+                        poll.title = "";
+                        console.log($scope.polls);
+                        //TODO flash message poll has been created
+                    })
+                    .error(function (data) {
+                        //TODO flash error that something went wrong
+                        console.log(data);
+                    })
+            }
+        };
+
+        // Open our new task modal
+        $scope.newPoll= function() {
+            $scope.pollModal.show();
+        };
+
+        // Close the new task modal
+        $scope.closeNewPoll = function() {
+            $scope.pollModal.hide();
+        };
+
+        //$scope.deleteMovie = function(movie) {
+        //    var index = $scope.movies.indexOf(movie)
+        //    $scope.movies.splice(index, 1);
+        //};
     });

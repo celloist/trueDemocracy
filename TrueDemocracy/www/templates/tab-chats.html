@@ -1,6 +1,9 @@
 <ion-view view-title="Chats">
   <ion-content>
     <ion-list>
+        <button class="button button-icon" ng-click="newPoll()">
+            <i class="icon ion-compose"></i>
+        </button>
       <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="chat in chats" type="item-text-wrap" href="#/tab/chats/{{chat.id}}">
         <img ng-src="{{chat.face}}">
         <h2>{{chat.name}}</h2>
@@ -12,5 +15,36 @@
         </ion-option-button>
       </ion-item>
     </ion-list>
+
+      <script id="add-poll.html" type="text/ng-template">
+
+          <div class="modal">
+
+              <!-- Modal header bar -->
+              <ion-header-bar class="bar-secondary">
+                  <h1 class="title">Add a new poll</h1>
+                  <button class="button button-clear button-positive" ng-click="closeNewPoll()">Cancel</button>
+              </ion-header-bar>
+
+              <!-- Modal content area -->
+              <ion-content>
+                  <form ng-submit="addPoll(poll)">
+                      <div class="list">
+                          <label class="item item-input">
+                              <input type="text" placeholder="What would be the tile of your poll?" ng-model="poll.title">
+                          </label>
+                      </div>
+                      <div class="padding">
+                          <button type="submit" class="button button-block button-positive">Add poll!</button>
+                      </div>
+                  </form>
+
+              </ion-content>
+
+          </div>
+
+      </script>
+
   </ion-content>
 </ion-view>
+
