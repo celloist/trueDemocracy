@@ -4,11 +4,108 @@
   The FriendsCtrl pulls data from the Friends service (service.js)
   The Friends service returns an array of friend data
 -->
-<ion-view view-title="{{chat.name}}">
+<ion-view view-title="{{poll.title}}">
   <ion-content class="padding">
-    <img ng-src="{{chat.face}}" style="width: 64px; height: 64px">
+   <!-- <img ng-src="{{chat.face}}" style="width: 64px; height: 64px"> -->
     <p>
-      {{chat.lastText}}
+      <!-- TODO {{poll.longDescription}} -->
     </p>
+      <div class="button-bar">
+          <a class="button icon-right ion-thumbsup button-positive" ng-click="showConfirmRating(poll, 'yay')">Yay</a>
+          <a class="button icon-right ion-thumbsdown button-assertive" ng-click="showConfirmRating(poll, 'nay')">Nay</a>
+          <a class="button button-stable icon-right ion-document" ng-click="showConfirmRating(poll, 'neutral')">Neutral</a>
+      </div>
+
+      <div class="list card">
+
+          <p class="item item-icon-left">
+              <i class="icon  ion-thumbsup"></i>
+              Yays: {{yays}}
+          </p>
+
+          <p class="item item-icon-left">
+              <i class="icon ion-thumbsdown"></i>
+              Nays: {{nays}}
+          </p>
+
+          <p class="item item-icon-left">
+              <i class="icon ion-document"></i>
+              Neutral votes: {{neutral}}
+          </p>
+      </div>
+
+
+      <div id="chart">
+      </div>
+
+      <script type="text/javascript">
+          document.getElementById("chart").onload = function() {
+              var data = [{"crimeType": "mip", "totalCrimes": 24}, {
+                  "crimeType": "theft",
+                  "totalCrimes": 558
+              }, {"crimeType": "drugs", "totalCrimes": 81}, {
+                  "crimeType": "arson",
+                  "totalCrimes": 3
+              }, {"crimeType": "assault", "totalCrimes": 80}, {
+                  "crimeType": "burglary",
+                  "totalCrimes": 49
+              }, {"crimeType": "disorderlyConduct", "totalCrimes": 63}, {
+                  "crimeType": "mischief",
+                  "totalCrimes": 189
+              }, {"crimeType": "dui", "totalCrimes": 107}, {
+                  "crimeType": "resistingArrest",
+                  "totalCrimes": 11
+              }, {"crimeType": "sexCrimes", "totalCrimes": 24}, {"crimeType": "other", "totalCrimes": 58}];
+
+
+              var width = 800,
+                      height = 250,
+                      radius = Math.min(width, height) / 2;
+
+              var color = d3.scale.ordinal()
+                      .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+
+              var arc = d3.svg.arc()
+                      .outerRadius(radius - 10)
+                      .innerRadius(radius - 70);
+
+              var pie = d3.layout.pie()
+                      .sort(null)
+                      .value(function (d) {
+                          return d.totalCrimes;
+                      });
+
+              console.log(d3);
+
+              var svg = d3.select("#chart").append("svg")
+                      .attr("width", width)
+                      .attr("height", height)
+                      .append("g")
+                      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+              var g = svg.selectAll(".arc")
+                      .data(pie(data))
+                      .enter().append("g")
+                      .attr("class", "arc");
+
+              g.append("path")
+                      .attr("d", arc)
+                      .style("fill", function (d) {
+                          return color(d.data.crimeType);
+                      });
+
+              g.append("text")
+                      .attr("transform", function (d) {
+                          return "translate(" + arc.centroid(d) + ")";
+                      })
+                      .attr("dy", ".35em")
+                      .style("text-anchor", "middle")
+                      .text(function (d) {
+                          return d.data.crimeType;
+                      });
+          }
+
+      </script>
+
   </ion-content>
 </ion-view>

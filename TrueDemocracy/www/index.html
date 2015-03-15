@@ -28,7 +28,11 @@
 
       <script src="//cdn.auth0.com/w2/auth0-angular-4.js"> </script>
 
-    <!-- cordova script (this will be a 404 during development) -->
+      <!-- D3 library -->
+      <script src="http://d3js.org/d3.v3.min.js"></script>
+
+
+      <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
 
     <!-- your app's js -->
@@ -36,10 +40,11 @@
     <script src="js/controllers.js"></script>
     <script src="js/services.js"></script>
   </head>
-  <body ng-app="starter" ng-controller="ChatDetailCtrl">
+  <body ng-app="starter">
     <!--
       The nav bar that will be updated as we navigate between views.
     -->
+
     <ion-nav-bar class="bar-stable">
       <ion-nav-back-button>
       </ion-nav-back-button>
