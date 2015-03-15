@@ -13,6 +13,11 @@
         <button class="button button-assertive" ng-click="showConfirmLogout()">
             Logout
         </button>
+
+        <button class="button button-assertive" ng-click="getPhoto()">
+            Camera
+        </button>
     </ion-list>
+      <img ng-src="{{lastPhoto}}" style="max-width: 100%">
   </ion-content>
 </ion-view>

@@ -6,11 +6,39 @@ The Friends service returns an array of friend data
 -->
 <ion-view view-title="{{poll.title}}">
   <ion-content class="padding">
-    <!--<img ng-src="{{friend.face}}" style="width: 64px; height: 64px"> -->
-    <h3>{{poll.title}}</h3>
-      <h4>Details</h4>
-    <p>
-      {{poll.rating}} <!-- TODO add rating stuff here -->
-    </p>
+      <div class="list card">
+
+          <div class="item item-avatar">
+              <img src="mcfly.jpg">
+              <h2>{{poll.title}}</h2>
+              <p>{{poll.dateOfCreation}}</p>
+          </div>
+
+          <div class="item item-body">
+              <img class="full-image" src="delorean.jpg">
+              <p>
+                  {{poll.longDescription}}
+              </p>
+              <p>
+                  <a href="#" class="subdued">{{yays}} Yays</a>
+                  <a href="#" class="subdued">{{nays}} Nays</a>
+                  <a href="#" class="subdued">{{neutral}} Neutral votes</a>
+              </p>
+          </div>
+<!--
+          <div class="item tabs tabs-secondary tabs-icon-left">
+              <a class="tab-item button icon-right ion-thumbsup button-positive" ng-click="showConfirmRating(poll, 'yay')">
+                  Edit title
+              </a>
+              <a class="tab-item button icon-right ion-thumbsdown button-assertive" ng-click="showConfirmRating(poll, 'nay')">
+                  Edit
+              </a>
+              <a class="tab-item button button-stable icon-right ion-document" ng-click="showConfirmRating(poll, 'neutral')">
+                  Neutral
+              </a>
+          </div>
+          -->
+
+      </div>
   </ion-content>
 </ion-view>

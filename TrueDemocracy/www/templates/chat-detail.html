@@ -6,9 +6,42 @@
 -->
 <ion-view view-title="{{poll.title}}">
   <ion-content class="padding">
+      <div class="list card">
+
+          <div class="item item-avatar">
+              <img src="mcfly.jpg">
+              <h2>{{poll.title}}</h2>
+              <p>{{poll.dateOfCreation}}</p>
+          </div>
+
+          <div class="item item-body">
+              <img class="full-image" src="delorean.jpg">
+              <p>
+                  {{poll.longDescription}}
+              </p>
+              <p>
+                  <a href="#" class="subdued">{{yays}} Yays</a>
+                  <a href="#" class="subdued">{{nays}} Nays</a>
+                  <a href="#" class="subdued">{{neutral}} Neutral votes</a>
+              </p>
+          </div>
+
+          <div class="item tabs tabs-secondary tabs-icon-left">
+              <a class="tab-item button icon-right ion-thumbsup button-positive" ng-click="showConfirmRating(poll, 'yay')">
+                  Yay!
+              </a>
+              <a class="tab-item button icon-right ion-thumbsdown button-assertive" ng-click="showConfirmRating(poll, 'nay')">
+                  Nay!
+              </a>
+              <a class="tab-item button button-stable icon-right ion-document" ng-click="showConfirmRating(poll, 'neutral')">
+                  Neutral
+              </a>
+          </div>
+
+      </div>
    <!-- <img ng-src="{{chat.face}}" style="width: 64px; height: 64px"> -->
-    <p>
-      <!-- TODO {{poll.longDescription}} -->
+    <!-- <p>
+      <!-- TODO {{poll.longDescription}}
     </p>
       <div class="button-bar">
           <a class="button icon-right ion-thumbsup button-positive" ng-click="showConfirmRating(poll, 'yay')">Yay</a>
@@ -105,7 +138,7 @@
                       });
           }
 
-      </script>
+      </script> -->
 
   </ion-content>
 </ion-view>

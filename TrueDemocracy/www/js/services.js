@@ -126,7 +126,7 @@ angular.module('starter.services', [])
             },
             insert : function(poll, $scope, loadingIndicator){
                 if (poll.title != "") {
-                    $http.post('https://sleepy-reaches-3503.herokuapp.com/users/' + 'auth0|55008768f9ffe30c45cf506b' + '/polls', {title: poll.title})
+                    $http.post('http://localhost:8080/api/users/' + 'auth0|55008768f9ffe30c45cf506b' + '/polls', {title: poll.title, shortDescription: poll.shortDescription, longDescription: poll.longDescription})
                         .success(function (data) {
                             loadingIndicator.hide();
                             $scope.pollModal.hide();
@@ -197,4 +197,22 @@ angular.module('starter.services', [])
                     });
             }
         }
-}]);
+}])
+
+.factory('Camera', ['$q', function($q) {
+
+        return {
+            getPicture: function(options) {
+                var q = $q.defer();
+
+                navigator.camera.getPicture(function(result) {
+                    // Do any magic you need
+                    q.resolve(result);
+                }, function(err) {
+                    q.reject(err);
+                }, options);
+
+                return q.promise;
+            }
+        }
+    }]);

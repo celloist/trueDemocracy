@@ -28,9 +28,9 @@
 
       <script src="//cdn.auth0.com/w2/auth0-angular-4.js"> </script>
 
+      <script src="lib/ngCordova/dist/ng-cordova.js"></script>
       <!-- D3 library -->
       <script src="http://d3js.org/d3.v3.min.js"></script>
-
 
       <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
@@ -71,8 +71,25 @@
                 <form ng-submit="addPoll(poll)">
                     <div class="list">
                         <label class="item item-input">
-                            <input type="text" placeholder="What would be the tile of your poll?" ng-model="poll.title">
+                            <input type="text" ng-minlength="10" ng-maxlength="100" placeholder="What would be the tile of your poll?" ng-model="poll.title" required>
+                            <span class="error" ng-show="poll.title.$error.required">Required!</span>
+                            <span class="error" ng-show="poll.title.$error.minlength">Too short!</span>
+                            <span class="error" ng-show="poll.title.$error.maxlength">Too long!</span>
                         </label>
+                        <label class="item item-input">
+                        <input type="text" ng-minlength="10" ng-maxlength="150" placeholder="Please enter a short description of your poll" ng-model="poll.shortDescription">
+                        </label>
+                        <p>
+                        <span class="error" ng-show="poll.shortDescription.$error.required">Required!</span>
+                        <span class="error" ng-show="poll.shortDescription.$error.minlength">Too short!</span>
+                        <span class="error" ng-show="poll.shortDescription.$error.maxlength">Too long!</span>
+                            </p>
+                        <label class="item item-input">
+                        <input type="text" height="200px" ng-minlength="10" ng-maxlength="500" placeholder="Please enter a long description of your poll" ng-model="poll.longDescription">
+                        </label>
+                        <span class="error" ng-show="poll.longDescription.$error.required">Required!</span>
+                        <span class="error" ng-show="poll.longDescription.$error.minlength">Too short!</span>
+                        <span class="error" ng-show="poll.longDescription.$error.maxlength">Too long!</span>
                     </div>
                     <div class="padding">
                         <button type="submit" class="button button-block button-positive">Add poll!</button>

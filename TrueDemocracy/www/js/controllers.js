@@ -1,6 +1,9 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope, auth) {})
+.controller('DashCtrl', function($scope, auth, Polls, MyPolls) {
+        Polls.all();
+        MyPolls.all();
+    })
 
 .controller('ChatsCtrl', function($scope, Polls, auth) {
   $scope.polls = Polls.all();
@@ -13,8 +16,9 @@ angular.module('starter.controllers', [])
 
 .controller('ChatDetailCtrl', function($scope, $stateParams, Polls, MyPolls, auth, $ionicModal, $ionicPopup, $ionicLoading) {
     $scope.poll = Polls.get($stateParams.pollId);
+        var poll = $scope.poll;
         console.log($stateParams.pollId);
-        console.log("Poll: " + $scope.poll);
+        console.log("Poll: " + $scope.poll.longDescription);
         $scope.polls = [];
         var tempModal;
 
@@ -98,10 +102,14 @@ angular.module('starter.controllers', [])
 .controller('PollDetailCtrl', function($scope, $stateParams, MyPolls, auth) {
   $scope.poll = MyPolls.get($stateParams.pollId);
 
+        $scope.yays = $scope.poll.yays.length;
+        $scope.nays = $scope.poll.nays.length;
+        $scope.neutral = $scope.poll.neutral.length;
+
   console.log(  $scope.poll);
 })
 
-.controller('AccountCtrl', function($scope, auth, $ionicPopup, $state) {
+.controller('AccountCtrl', function($scope, auth, $ionicPopup, $state, Camera) {
   $scope.settings = {
     enableFriends: true
   };
@@ -120,6 +128,19 @@ angular.module('starter.controllers', [])
                 } else {
 
                 }
+            });
+        };
+
+        $scope.getPhoto = function() {
+            Camera.getPicture().then(function (imageURI) {
+                $scope.lastPhoto = imageURI;
+            }, function (err) {
+                console.err(err);
+            }, {
+                quality: 75,
+                targetWidth: 320,
+                targetHeight: 320,
+                saveToPhotoAlbum: false
             });
         };
 })
