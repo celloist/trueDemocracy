@@ -1,0 +1,28 @@
+<script id="add-poll.html" type="text/ng-template">
+
+    <div class="modal">
+
+        <!-- Modal header bar -->
+        <ion-header-bar class="bar-secondary">
+            <h1 class="title">Add a new poll</h1>
+            <button class="button button-clear button-positive" ng-click="closeNewPoll()">Cancel</button>
+        </ion-header-bar>
+
+        <!-- Modal content area -->
+        <ion-content>
+            <form ng-submit="addPoll()">
+                <div class="list">
+                    <label class="item item-input">
+                        <input type="text" placeholder="What would be the tile of your poll?" ng-model="title">
+                    </label>
+                </div>
+                <div class="padding">
+                    <button type="submit" class="button button-block button-positive">Add poll!</button>
+                </div>
+            </form>
+
+        </ion-content>
+
+    </div>
+
+</script>
