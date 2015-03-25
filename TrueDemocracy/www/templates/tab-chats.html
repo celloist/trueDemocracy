@@ -1,5 +1,15 @@
 <ion-view view-title="Chats">
   <ion-content>
+      <ion-side-menus>
+      <ion-side-menu expose-aside-when="large">
+          <ion-item class="item-icon-right" ng-repeat="poll in polls" type="item-text-wrap" href="#/tab/chats/{{$scope.index = $index}}">
+
+              <h2>{{poll.title}}</h2>
+              <p>{{poll.shortDescription}}</p>
+              <i class="icon ion-chevron-right icon-accessory"></i>
+
+          </ion-item>
+      </ion-side-menu>
     <ion-list>
         <div class="range">
             <i class="icon ion-minus-circled"></i>
@@ -15,6 +25,7 @@
 
       </ion-item>
     </ion-list>
+      </ion-side-menus>
 
   </ion-content>
 </ion-view>

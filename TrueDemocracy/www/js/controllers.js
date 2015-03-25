@@ -5,13 +5,17 @@ angular.module('starter.controllers', [])
         MyPolls.all();
     })
 
-.controller('ChatsCtrl', function($scope, Polls, auth) {
+.controller('ChatsCtrl', function($scope, Polls, auth, $ionicSideMenuDelegate) {
   $scope.polls = Polls.all();
 
         $scope.onRelease = function(data){
             console.log(data.range); //TODO Refresh the list with the current according to the current range,
                                      // use this range in a url query string to get the correct polls(Needs the Google Earth API and Geolocation)
-        }
+        };
+
+        $scope.toggleLeft = function() {
+            $ionicSideMenuDelegate.toggleLeft();
+        };
 })
 
 .controller('ChatDetailCtrl', function($scope, $stateParams, Polls, MyPolls, auth, $ionicModal, $ionicPopup, $ionicLoading) {
@@ -22,7 +26,6 @@ angular.module('starter.controllers', [])
         $scope.polls = [];
         var tempModal;
 
-        console.log($scope.poll.yays.length)
         $scope.yays = $scope.poll.yays.length;
         $scope.nays = $scope.poll.nays.length;
         $scope.neutral = $scope.poll.neutral.length;
