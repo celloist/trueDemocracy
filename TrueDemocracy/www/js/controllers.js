@@ -135,7 +135,7 @@ angular.module('starter.controllers', [])
         };
 })
 
-.controller('AccountCtrl', function($scope, auth, $ionicPopup, $state, Camera) {
+.controller('AccountCtrl', function($scope, auth, store, $ionicPopup, $state, Camera, $window) {
   $scope.settings = {
     enableFriends: true
   };
@@ -150,7 +150,6 @@ angular.module('starter.controllers', [])
                     auth.signout();
                     store.remove('profile');
                     store.remove('token');
-                    $state.go('login')
                 } else {
 
                 }
