@@ -1,7 +1,7 @@
 <ion-side-menus>
       <ion-side-menu-content>
           <ion-header-bar class="bar-positive">
-              <button class="button button-icon ion-navicon" ng-click="toggleLeft()"></button>
+              <button class="button button-icon ion-navicon" ng-click="toggleLeft()" ng-hide="$exposeAside.active"></button>
               <h1 class="title">Polls</h1>
           </ion-header-bar>
           <ion-content class="padding" ng-show="hasSelectedPoll">
@@ -19,9 +19,9 @@
                                   {{pollDetail.longDescription}}
                               </p>
                               <p>
-                                  <a href="#" class="subdued">{{yays}} Yays</a>
-                                  <a href="#" class="subdued">{{nays}} Nays</a>
-                                  <a href="#" class="subdued">{{neutral}} Neutral votes</a>
+                                  <a href="#" class="subdued">Yays: {{yays}}</a>
+                                  <a href="#" class="subdued">Nays: {{nays}}</a>
+                                  <a href="#" class="subdued">Neutral votes: {{neutral}}</a>
                               </p>
                           </div>
 
@@ -50,7 +50,7 @@
           </ion-header-bar>
           <ion-content>
               <!--<ion-item class="item-icon-right" ng-repeat="poll in polls" type="item-text-wrap" href="#/tab/chats/{{$scope.index = $index}}">-->
-              <ion-item class="item-icon-right" ng-repeat="poll in polls" type="item-text-wrap" ng-click="getPoll($index)">
+              <ion-item class="item-icon-right" ng-repeat="poll in polls" type="item-text-wrap" on-tap="getPoll($index)">
                   <h2>{{poll.title}}</h2>
                   <p>{{poll.shortDescription}}</p>
                   <i class="icon ion-chevron-right icon-accessory"></i>

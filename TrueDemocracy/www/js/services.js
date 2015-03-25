@@ -1,14 +1,18 @@
 angular.module('starter.services', [])
 
+.factory('superCache', ['$cacheFactory', function($cacheFactory) {
+        return $cacheFactory('super-cache');
+}])
+
 .factory('MyPolls', ['auth', '$http', function(auth, $http) {
 
         var polls = [];
 
         return {
-            all : function(){
+            all : function($scope){
                 $http.get('https://sleepy-reaches-3503.herokuapp.com/api/users/' + 'auth0|55008768f9ffe30c45cf506b' + '/polls')
                     .success(function(data){
-                        polls = data;
+                        $scope.polls = data;
                     })
                     .error(function(data){
                         console.log(data);
@@ -57,11 +61,12 @@ angular.module('starter.services', [])
         var polls = [];
 
         return {
-            all : function(){
+            all : function($scope){
                 //Gets all the polls a specific user voted on
                 $http.get('https://sleepy-reaches-3503.herokuapp.com/api/polls?userId='+'auth0|55008768f9ffe30c45cf506b')
                     .success(function(data){
                         polls = data.data;
+                        $scope.polls = polls;
                     })
                     .error(function(data){
                         console.log(data);

@@ -48,10 +48,10 @@
       The nav bar that will be updated as we navigate between views.
     -->
 
-    <ion-nav-bar class="bar-stable">
-      <ion-nav-back-button>
-      </ion-nav-back-button>
-    </ion-nav-bar>
+    <!--<ion-nav-bar class="bar-stable">-->
+      <!--<ion-nav-back-button>-->
+      <!--</ion-nav-back-button>-->
+    <!--</ion-nav-bar>-->
     <!--
       The views will be rendered in the <ion-nav-view> directive below
       Templates are in the /templates folder (but you could also
@@ -71,10 +71,10 @@
 
             <!-- Modal content area -->
             <ion-content>
-                <form ng-submit="addPoll(poll)">
+                <form name="pollForm" ng-submit="addPoll(poll)" novalidate>
                     <div class="list">
                         <label class="item item-input">
-                            <input type="text" ng-minlength="10" ng-maxlength="100" placeholder="What would be the tile of your poll?" ng-model="poll.title" required>
+                            <input type="text" minlength="10" maxlength="100" placeholder="What would be the tile of your poll?" ng-model="poll.title" required>
                             <span class="error" ng-show="poll.title.$error.required">Required!</span>
                             <span class="error" ng-show="poll.title.$error.minlength">Too short!</span>
                             <span class="error" ng-show="poll.title.$error.maxlength">Too long!</span>

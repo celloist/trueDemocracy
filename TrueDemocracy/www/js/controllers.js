@@ -5,8 +5,15 @@ angular.module('starter.controllers', [])
         MyPolls.all();
     })
 
-.controller('PollsCtrl', function($scope, Polls, auth, $ionicSideMenuDelegate, $ionicPopup) {
-  $scope.polls = Polls.all();
+.controller('PollsCtrl', function($scope, Polls, auth, $ionicSideMenuDelegate, $ionicPopup, superCache) {
+
+        $scope.polls = [];
+
+        Polls.all($scope);
+
+        $scope.$watchCollection('polls', function(newPolls, oldNames) {
+            $scope.polls = newPolls;
+        });
 
         $scope.hasSelectedPoll = false;
 
@@ -48,7 +55,16 @@ angular.module('starter.controllers', [])
 .controller('MyPollsCtrl', function($scope, MyPolls, $ionicPopup,  $ionicModal, $ionicLoading, $ionicSideMenuDelegate) {
   $scope.polls = MyPolls.all();
 
+
         $scope.hasSelectedPoll = false;
+
+        $scope.polls = [];
+
+        MyPolls.all($scope);
+
+        $scope.$watchCollection('polls', function(newPolls, oldNames) {
+            $scope.polls = newPolls;
+        });
 
         // Create and load the Modal
         $ionicModal.fromTemplateUrl('add-poll.html', function(modal) {
@@ -97,7 +113,7 @@ angular.module('starter.controllers', [])
             $scope.neutral = $scope.pollDetail.neutral.length;
         };
 
-        $scope.showConfirm = function(poll) {
+        $scope.showConfirmDelete = function(poll) {
             var confirmPopup = $ionicPopup.confirm({
                 title: 'Delete poll',
                 template: 'Are you sure you want to delete this poll?'
