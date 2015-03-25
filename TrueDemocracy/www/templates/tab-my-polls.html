@@ -1,18 +1,49 @@
-<ion-view view-title="Friends">
-  <ion-content>
-    <ion-list>
-        <button class="button button-icon" ng-click="newPoll()">
-            <i class="icon ion-compose"></i>
-        </button>
-        <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="poll in polls" type="item-text-wrap" href="#/tab/myPolls/{{$scope.index = $index}}">
-       <!-- <img ng-src="{{friend.face}}"> -->
-        <h2>{{poll.title}}</h2>
-            <i class="icon ion-chevron-right icon-accessory"></i>
+<ion-side-menus>
+    <ion-side-menu-content>
+        <ion-header-bar class="bar-positive">
+            <button class="button button-icon ion-navicon" ng-click="toggleLeft()"></button>
+            <h1 class="title">Polls</h1>
+        </ion-header-bar>
+        <ion-content class="padding" ng-show="hasSelectedPoll">
+            <div class="list card">
 
-            <ion-option-button class="button-assertive" ng-click="showConfirm(poll)">
-                Delete
-            </ion-option-button>
-      </ion-item>
-    </ion-list>
-  </ion-content>
-</ion-view>
+                <div class="item item-avatar">
+                    <img src="mcfly.jpg">
+                    <h2>{{pollDetail.title}}</h2>
+                    <p>{{pollDetail.dateOfCreation}}</p>
+                </div>
+
+                <div class="item item-body">
+                    <img class="full-image" src="delorean.jpg">
+                    <p>
+                        {{pollDetail.longDescription}}
+                    </p>
+                    <p>
+                        <a href="#" class="subdued">{{yays}} Yays</a>
+                        <a href="#" class="subdued">{{nays}} Nays</a>
+                        <a href="#" class="subdued">{{neutral}} Neutral votes</a>
+                    </p>
+                </div>
+
+            </div>
+        </ion-content>
+
+        <ion-content class="padding" ng-show="!hasSelectedPoll">
+            <h2 class="subdued">Please selected a poll from the left side menu</h2>
+        </ion-content>
+    </ion-side-menu-content>
+
+    <ion-side-menu expose-aside-when="large">
+        <ion-header-bar class="bar-royal">
+            <h1 class="title">Left Menu</h1>
+        </ion-header-bar>
+        <ion-content>
+            <!--<ion-item class="item-icon-right" ng-repeat="poll in polls" type="item-text-wrap" href="#/tab/chats/{{$scope.index = $index}}">-->
+            <ion-item class="item-icon-right" ng-repeat="poll in polls" type="item-text-wrap" ng-click="getPoll($index)">
+                <h2>{{poll.title}}</h2>
+                <p>{{poll.shortDescription}}</p>
+                <i class="icon ion-chevron-right icon-accessory"></i>
+            </ion-item>
+        </ion-content>
+    </ion-side-menu>
+</ion-side-menus>

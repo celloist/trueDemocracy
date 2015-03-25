@@ -45,8 +45,10 @@ angular.module('starter.controllers', [])
         };
 })
 
-.controller('MyPollsCtrl', function($scope, MyPolls, $ionicPopup,  $ionicModal, $ionicLoading) {
+.controller('MyPollsCtrl', function($scope, MyPolls, $ionicPopup,  $ionicModal, $ionicLoading, $ionicSideMenuDelegate) {
   $scope.polls = MyPolls.all();
+
+        $scope.hasSelectedPoll = false;
 
         // Create and load the Modal
         $ionicModal.fromTemplateUrl('add-poll.html', function(modal) {
@@ -80,6 +82,21 @@ angular.module('starter.controllers', [])
             $scope.pollModal.hide();
         };
 
+        $scope.toggleLeft = function() {
+            $ionicSideMenuDelegate.toggleLeft();
+        };
+
+        $scope.getPoll = function(pollId){
+            if(!$scope.hasSelectedPoll){
+                $scope.hasSelectedPoll = true;
+            }
+            $ionicSideMenuDelegate.toggleLeft();
+            $scope.pollDetail = $scope.polls[pollId];
+            $scope.yays = $scope.pollDetail.yays.length;
+            $scope.nays = $scope.pollDetail.nays.length;
+            $scope.neutral = $scope.pollDetail.neutral.length;
+        };
+
         $scope.showConfirm = function(poll) {
             var confirmPopup = $ionicPopup.confirm({
                 title: 'Delete poll',
@@ -100,16 +117,6 @@ angular.module('starter.controllers', [])
                 }
             });
         };
-})
-
-.controller('MyPollDetailCtrl', function($scope, $stateParams, MyPolls, auth) {
-  $scope.poll = MyPolls.get($stateParams.pollId);
-
-        $scope.yays = $scope.poll.yays.length;
-        $scope.nays = $scope.poll.nays.length;
-        $scope.neutral = $scope.poll.neutral.length;
-
-  console.log(  $scope.poll);
 })
 
 .controller('AccountCtrl', function($scope, auth, $ionicPopup, $state, Camera) {
