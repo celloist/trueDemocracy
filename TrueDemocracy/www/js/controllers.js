@@ -5,6 +5,7 @@ angular.module('starter.controllers', [])
         MyPolls.all();
     })
 
+
 .controller('PollsCtrl', function($scope, Polls, auth, $ionicSideMenuDelegate, $ionicPopup, superCache) {
 
         $scope.polls = [];
