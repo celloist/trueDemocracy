@@ -4,7 +4,7 @@
         <button class="button button-icon" ng-click="newPoll()">
             <i class="icon ion-compose"></i>
         </button>
-        <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="poll in polls" type="item-text-wrap" href="#/tab/friend/{{$scope.index = $index}}">
+        <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="poll in polls" type="item-text-wrap" href="#/tab/myPolls/{{$scope.index = $index}}">
        <!-- <img ng-src="{{friend.face}}"> -->
         <h2>{{poll.title}}</h2>
             <i class="icon ion-chevron-right icon-accessory"></i>

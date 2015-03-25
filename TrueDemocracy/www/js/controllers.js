@@ -5,27 +5,30 @@ angular.module('starter.controllers', [])
         MyPolls.all();
     })
 
-.controller('ChatsCtrl', function($scope, Polls, auth) {
+.controller('PollsCtrl', function($scope, Polls, auth, $ionicSideMenuDelegate, $ionicPopup) {
   $scope.polls = Polls.all();
+
+        $scope.hasSelectedPoll = false;
 
         $scope.onRelease = function(data){
             console.log(data.range); //TODO Refresh the list with the current according to the current range,
                                      // use this range in a url query string to get the correct polls(Needs the Google Earth API and Geolocation)
-        }
-})
+        };
 
-.controller('ChatDetailCtrl', function($scope, $stateParams, Polls, MyPolls, auth, $ionicModal, $ionicPopup, $ionicLoading) {
-    $scope.poll = Polls.get($stateParams.pollId);
-        var poll = $scope.poll;
-        console.log($stateParams.pollId);
-        console.log("Poll: " + $scope.poll.longDescription);
-        $scope.polls = [];
-        var tempModal;
+        $scope.toggleLeft = function() {
+            $ionicSideMenuDelegate.toggleLeft();
+        };
 
-        console.log($scope.poll.yays.length)
-        $scope.yays = $scope.poll.yays.length;
-        $scope.nays = $scope.poll.nays.length;
-        $scope.neutral = $scope.poll.neutral.length;
+        $scope.getPoll = function(pollId){
+            if(!$scope.hasSelectedPoll){
+                $scope.hasSelectedPoll = true;
+            }
+            $ionicSideMenuDelegate.toggleLeft();
+            $scope.pollDetail = $scope.polls[pollId];
+            $scope.yays = $scope.pollDetail.yays.length;
+            $scope.nays = $scope.pollDetail.nays.length;
+            $scope.neutral = $scope.pollDetail.neutral.length;
+        };
 
         $scope.showConfirmRating = function(poll, ratingType) {
             var confirmPopup = $ionicPopup.confirm({
@@ -42,7 +45,7 @@ angular.module('starter.controllers', [])
         };
 })
 
-.controller('FriendsCtrl', function($scope, MyPolls, $ionicPopup,  $ionicModal, $ionicLoading) {
+.controller('MyPollsCtrl', function($scope, MyPolls, $ionicPopup,  $ionicModal, $ionicLoading) {
   $scope.polls = MyPolls.all();
 
         // Create and load the Modal
@@ -99,7 +102,7 @@ angular.module('starter.controllers', [])
         };
 })
 
-.controller('PollDetailCtrl', function($scope, $stateParams, MyPolls, auth) {
+.controller('MyPollDetailCtrl', function($scope, $stateParams, MyPolls, auth) {
   $scope.poll = MyPolls.get($stateParams.pollId);
 
         $scope.yays = $scope.poll.yays.length;
