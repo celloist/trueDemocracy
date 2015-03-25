@@ -121,40 +121,40 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     }
   })
 
-  .state('tab.chats', {
-      url: '/chats',
+  .state('tab.polls', {
+      url: '/polls',
       views: {
-        'tab-chats': {
-          templateUrl: 'templates/tab-chats.html',
-          controller: 'ChatsCtrl'
+        'tab-polls': {
+          templateUrl: 'templates/tab-polls.html',
+          controller: 'PollsCtrl'
         }
       }
     })
-    .state('tab.chat-detail', {
-      url: '/chats/:pollId',
+    .state('tab.poll-detail', {
+      url: '/polls/:pollId',
       views: {
-        'tab-chats': {
-          templateUrl: 'templates/chat-detail.html',
-          controller: 'ChatDetailCtrl'
+        'tab-polls': {
+          templateUrl: 'templates/poll-detail.html',
+          controller: 'PollsDetailCtrl'
         }
       }
     })
 
-  .state('tab.friends', {
-      url: '/friends',
+  .state('tab.myPolls', {
+      url: '/myPolls',
       views: {
-        'tab-friends': {
-          templateUrl: 'templates/tab-friends.html',
-          controller: 'FriendsCtrl'
+        'tab-myPolls': {
+          templateUrl: 'templates/tab-my-polls.html',
+          controller: 'MyPollsCtrl'
         }
       }
     })
-    .state('tab.friend-detail', {
-      url: '/friend/:pollId',
+    .state('tab.myPolls-detail', {
+      url: '/myPolls/:pollId',
       views: {
-        'tab-friends': {
-          templateUrl: 'templates/friend-detail.html',
-          controller: 'PollDetailCtrl'
+        'tab-myPolls': {
+          templateUrl: 'templates/my-polls-detail.html',
+          controller: 'MyPollDetailCtrl'
         }
       }
     })

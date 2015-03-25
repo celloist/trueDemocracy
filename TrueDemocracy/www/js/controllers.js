@@ -5,7 +5,7 @@ angular.module('starter.controllers', [])
         MyPolls.all();
     })
 
-.controller('ChatsCtrl', function($scope, Polls, auth, $ionicSideMenuDelegate) {
+.controller('PollsCtrl', function($scope, Polls, auth, $ionicSideMenuDelegate) {
   $scope.polls = Polls.all();
 
         $scope.onRelease = function(data){
@@ -18,7 +18,7 @@ angular.module('starter.controllers', [])
         };
 })
 
-.controller('ChatDetailCtrl', function($scope, $stateParams, Polls, MyPolls, auth, $ionicModal, $ionicPopup, $ionicLoading) {
+.controller('PollDetailCtrl', function($scope, $stateParams, Polls, MyPolls, auth, $ionicModal, $ionicPopup, $ionicLoading) {
     $scope.poll = Polls.get($stateParams.pollId);
         var poll = $scope.poll;
         console.log($stateParams.pollId);
@@ -45,7 +45,7 @@ angular.module('starter.controllers', [])
         };
 })
 
-.controller('FriendsCtrl', function($scope, MyPolls, $ionicPopup,  $ionicModal, $ionicLoading) {
+.controller('MyPollsCtrl', function($scope, MyPolls, $ionicPopup,  $ionicModal, $ionicLoading) {
   $scope.polls = MyPolls.all();
 
         // Create and load the Modal
@@ -102,7 +102,7 @@ angular.module('starter.controllers', [])
         };
 })
 
-.controller('PollDetailCtrl', function($scope, $stateParams, MyPolls, auth) {
+.controller('MyPollDetailCtrl', function($scope, $stateParams, MyPolls, auth) {
   $scope.poll = MyPolls.get($stateParams.pollId);
 
         $scope.yays = $scope.poll.yays.length;
