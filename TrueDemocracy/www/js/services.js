@@ -23,6 +23,7 @@ angular.module('starter.services', [])
                 $http.delete('https://sleepy-reaches-3503.herokuapp.com/api/polls/' + poll._id)
                     .success(function(status){
                         $scope.polls.splice($scope.polls.indexOf(poll), 1);
+                        $scope.hasSelectedPoll = false;
                         loadingIndicator.hide();
                     })
                     .error(function(status){
