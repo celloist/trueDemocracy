@@ -28,7 +28,7 @@
                     </p>
                 </div>
                 <div class="item tabs tabs-secondary tabs-icon-left">
-                    <a class="tab-item button icon-right ion-edit button-positive" ng-click="showConfirm(pollDetail)">
+                    <a class="tab-item button icon-right ion-edit button-positive" ng-click="editPoll()">
                         Edit poll
                     </a>
                     <a class="tab-item button icon-right ion-trash-a button-assertive" ng-click="showConfirmDelete(pollDetail)">
@@ -54,6 +54,51 @@
                 <p>{{poll.shortDescription}}</p>
                 <i class="icon ion-chevron-right icon-accessory"></i>
             </ion-item>
+
+
+            <script id="edit-poll.html" type="text/ng-template">
+
+                <div class="modal">
+
+                    <!-- Modal header bar -->
+                    <ion-header-bar class="bar-secondary">
+                        <h1 class="title">Edit {{pollDetail.title}}</h1>
+                        <button class="button button-clear button-positive" ng-click="closeEditPoll()">Cancel</button>
+                    </ion-header-bar>
+
+                    <!-- Modal content area -->
+                    <ion-content>
+                        <form name="pollForm" ng-submit="updatePoll(poll)" novalidate>
+                            <div class="list">
+                                <label class="item item-input">
+                                    <input type="text" minlength="10" maxlength="100" placeholder="What would be the tile of your poll?" ng-model="pollDetail.title" required>
+                                    <!--<span class="error" ng-show="poll.title.$error.required">Required!</span>-->
+                                    <!--<span class="error" ng-show="poll.title.$error.minlength">Too short!</span>-->
+                                    <!--<span class="error" ng-show="poll.title.$error.maxlength">Too long!</span>-->
+                                </label>
+                                <label class="item item-input">
+                                    <input type="text" ng-minlength="10" ng-maxlength="150" placeholder="Please enter a short description of your poll" ng-model="pollDetail.shortDescription">
+                                </label>
+                                    <!--<span class="error" ng-show="poll.shortDescription.$error.required">Required!</span>-->
+                                    <!--<span class="error" ng-show="poll.shortDescription.$error.minlength">Too short!</span>-->
+                                    <!--<span class="error" ng-show="poll.shortDescription.$error.maxlength">Too long!</span>-->
+                                <label class="item item-input">
+                                    <input type="text" height="200px" ng-minlength="10" ng-maxlength="500" placeholder="Please enter a long description of your poll" ng-model="pollDetail.longDescription">
+                                </label>
+                                <!--<span class="error" ng-show="poll.longDescription.$error.required">Required!</span>-->
+                                <!--<span class="error" ng-show="poll.longDescription.$error.minlength">Too short!</span>-->
+                                <!--<span class="error" ng-show="poll.longDescription.$error.maxlength">Too long!</span>-->
+                            </div>
+                            <div class="padding">
+                                <button type="submit" class="button button-block button-positive">Edit poll!</button>
+                            </div>
+                        </form>
+
+                    </ion-content>
+
+                </div>
+
+            </script>
         </ion-content>
     </ion-side-menu>
 </ion-side-menus>

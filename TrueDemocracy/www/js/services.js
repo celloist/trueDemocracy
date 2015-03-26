@@ -39,7 +39,6 @@ angular.module('starter.services', [])
                             loadingIndicator.hide();
                             $scope.pollModal.hide();
                             poll.title = "";
-                            $scope.polls.push(data.data);
                         })
                         .error(function (data) {
                             //TODO flash error that something went wrong
@@ -47,10 +46,16 @@ angular.module('starter.services', [])
                         })
                 }
             },
-            update : function(poll){
-                $http.put('https://sleepy-reaches-3503.herokuapp.com/polls/' + poll._id, {title: poll.title})
-                    .succes(function(){
-
+            update : function(poll, $scope, loadingIndicator){
+                $http.put('https://sleepy-reaches-3503.herokuapp.com/polls/' + poll._id, {title: poll.title, shortDescription: poll.shortDescription, longDescription: poll.longDescription})
+                    .success(function(data){
+                        loadingIndicator.hide();
+                        $scope.pollEditModal.hide();
+                        $scope.polls.push(data.data);
+                    })
+                    .error(function (data) {
+                        //TODO flash error that something went wrong
+                        console.log(data);
                     })
             }
         }
@@ -62,7 +67,6 @@ angular.module('starter.services', [])
 
         return {
             all : function($scope){
-                //Gets all the polls a specific user voted on
                 $http.get('https://sleepy-reaches-3503.herokuapp.com/api/polls?userId='+'auth0|55008768f9ffe30c45cf506b')
                     .success(function(data){
                         polls = data.data;
@@ -115,6 +119,7 @@ angular.module('starter.services', [])
                 var q = $q.defer();
 
                 navigator.camera.getPicture(function(result) {
+                    console.log(result);
                     // Do any magic you need
                     q.resolve(result);
                 }, function(err) {

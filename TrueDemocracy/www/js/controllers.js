@@ -99,6 +99,40 @@ angular.module('starter.controllers', [])
             $scope.pollModal.hide();
         };
 
+
+        // Create and load the Modal
+        $ionicModal.fromTemplateUrl('edit-poll.html', function(modal) {
+            $scope.pollEditModal = modal;
+            tempEditModal = modal;
+        }, {
+            scope: $scope,
+            animation: 'slide-in-up'
+        });
+
+        // Called when the form is submitted
+        $scope.updatePoll = function(poll) {
+            $ionicLoading.show({
+                content: '<i class="icon ion-loading-b"></i>',
+                animation: 'fade-in',
+                showBackdrop: false,
+                maxWidth: 50,
+                showDelay: 0
+            });
+
+            MyPolls.update($scope.pollDetail, $scope, $ionicLoading);
+        };
+
+        // Open our new task modal
+        $scope.editPoll= function() {
+            $scope.pollEditModal.show();
+        };
+
+        // Close the new task modal
+        $scope.closeEditPoll = function() {
+            $scope.pollEditModal.hide();
+        };
+
+
         $scope.toggleLeft = function() {
             $ionicSideMenuDelegate.toggleLeft();
         };
@@ -158,17 +192,34 @@ angular.module('starter.controllers', [])
         };
 
         $scope.getPhoto = function() {
+
             Camera.getPicture().then(function (imageURI) {
-                $scope.lastPhoto = imageURI;
+                console.log("Image = " + imageURI);
+
+                var image = document.getElementById('myImage');
+                image.src = "data:image/jpeg;base64," + imageURI;
+
+               // $scope.lastPhoto = imageURI;
             }, function (err) {
-                console.err(err);
+                console.log(err);
             }, {
                 quality: 75,
                 targetWidth: 320,
                 targetHeight: 320,
-                saveToPhotoAlbum: false
+                saveToPhotoAlbum: false,
+                destinationType: Camera.DestinationType.DATA_URL,
+                sourceType: Camera.PictureSourceType.CAMERA
             });
         };
+
+        function onSuccess(imageData) {
+            var image = document.getElementById('myImage');
+            image.src = "data:image/jpeg;base64," + imageData;
+        }
+
+        function onFail(message) {
+            alert('Failed because: ' + message);
+        }
 })
 
 .controller('LoginCtrl', function($scope, auth, $state, store) {
