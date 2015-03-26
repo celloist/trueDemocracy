@@ -40,6 +40,7 @@ angular.module('starter.services', [])
                             loadingIndicator.hide();
                             $scope.pollModal.hide();
                             poll.title = "";
+                            $scope.polls.push(data.data);
                         })
                         .error(function (data) {
                             //TODO flash error that something went wrong
@@ -52,7 +53,6 @@ angular.module('starter.services', [])
                     .success(function(data){
                         loadingIndicator.hide();
                         $scope.pollEditModal.hide();
-                        $scope.polls.push(data.data);
                     })
                     .error(function (data) {
                         //TODO flash error that something went wrong
