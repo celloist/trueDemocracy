@@ -8,15 +8,16 @@ angular.module('starter.controllers', [])
 
 .controller('PollsCtrl', function($scope, Polls, auth, $ionicSideMenuDelegate, $ionicPopup, superCache) {
 
+        $scope.hasSelectedPoll = false;
+        $scope.hasVotedOn = false;
         $scope.polls = [];
+        $scope.votedOn = [];
 
         Polls.all($scope);
 
         $scope.$watchCollection('polls', function(newPolls, oldNames) {
             $scope.polls = newPolls;
         });
-
-        $scope.hasSelectedPoll = false;
 
         $scope.onRelease = function(data){
             console.log(data.range); //TODO Refresh the list with the current according to the current range,
@@ -27,12 +28,16 @@ angular.module('starter.controllers', [])
             $ionicSideMenuDelegate.toggleLeft();
         };
 
-        $scope.getPoll = function(pollId){
+        $scope.getPoll = function(pollIndex){
             if(!$scope.hasSelectedPoll){
                 $scope.hasSelectedPoll = true;
             }
             $ionicSideMenuDelegate.toggleLeft();
-            $scope.pollDetail = $scope.polls[pollId];
+
+            $scope.pollDetail = $scope.polls[pollIndex];
+
+            checkIfHasVotedOnPoll($scope.pollDetail._id);
+
             $scope.yays = $scope.pollDetail.yays.length;
             $scope.nays = $scope.pollDetail.nays.length;
             $scope.neutral = $scope.pollDetail.neutral.length;
@@ -46,11 +51,22 @@ angular.module('starter.controllers', [])
             confirmPopup.then(function(res) {
                 if(res) {
                     Polls.addRating(poll, ratingType, $scope);
+                    $scope.hasVotedOn = true;
                 }else{
 
                 }
             });
         };
+
+        function checkIfHasVotedOnPoll(pollId){
+            for(var i = 0; i < $scope.votedOn.length; i++){
+                if(pollId === $scope.votedOn[i]){
+                    $scope.hasVotedOn = true;
+                    return;
+                }
+            }
+            $scope.hasVotedOn = false;
+        }
 })
 
 .controller('MyPollsCtrl', function($scope, MyPolls, $ionicPopup,  $ionicModal, $ionicLoading, $ionicSideMenuDelegate) {

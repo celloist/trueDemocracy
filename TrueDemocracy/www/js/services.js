@@ -71,6 +71,8 @@ angular.module('starter.services', [])
                 $http.get('https://sleepy-reaches-3503.herokuapp.com/api/polls?userId='+'auth0|55008768f9ffe30c45cf506b')
                     .success(function(data){
                         polls = data.data;
+
+                        $scope.votedOn = data.votedOn;
                         $scope.polls = polls;
                     })
                     .error(function(data){
