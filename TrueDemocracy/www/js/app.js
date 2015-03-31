@@ -169,7 +169,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     }
   })
 
-      .state('tab.account.map', {
+      .state('tab.account-map', {
           url: '/account/map',
           views: {
               'tab-account': {
