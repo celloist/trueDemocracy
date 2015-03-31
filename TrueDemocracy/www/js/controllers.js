@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope, auth, Polls, MyPolls) {
+.controller('DashCtrl', function($scope, auth, Polls, MyPolls, store) {
         $scope.polls = [];
         $scope.votedOn = [];
         $scope.yays = 0;
@@ -18,7 +18,6 @@ angular.module('starter.controllers', [])
         });
 
         $scope.$watchCollection('myPolls', function(newPolls, oldNames) {
-            //console.log(newPolls);
             $scope.myPolls = newPolls;
             for(i = 0; i < $scope.myPolls.length; i++){
                 $scope.yays += $scope.myPolls[i].yays.length;
@@ -26,16 +25,22 @@ angular.module('starter.controllers', [])
                 $scope.neutral += $scope.myPolls[i].neutral.length;
             }
         });
+
+        //This initial value has to be checked and set if needed
+        if(!store.get('showOwnPolls')){
+            store.set('showOwnPolls', false);
+        }
     })
 
 
-.controller('PollsCtrl', function($scope, Polls, auth, $ionicSideMenuDelegate, $ionicPopup, Socket) {
+.controller('PollsCtrl', function($scope, Polls, auth, $ionicSideMenuDelegate, $ionicPopup, Socket, store) {
 
         $scope.hasSelectedPoll = false;
         $scope.hasVotedOn = false;
         $scope.polls = [];
         $scope.votedOn = [];
 
+        console.log(store.get('showOwnPolls'));
         Socket.on('poll:increment', function (data) {
             console.log(data);
             for(var i = 0; i < $scope.polls.length; i++){
@@ -238,8 +243,13 @@ angular.module('starter.controllers', [])
 
 .controller('AccountCtrl', function($scope, auth, store, $ionicPopup, $state, Camera, $window, Socket) {
   $scope.settings = {
-    enableFriends: true
+    showOwnPolls: store.get('showOwnPolls')
   };
+
+        $scope.storeSettings = function (settings) {
+            store.set('showOwnPolls', settings.showOwnPolls);
+            console.log(store.get('showOwnPolls'));
+        };
 
         $scope.showConfirmLogout = function() {
             var confirmPopup = $ionicPopup.confirm({
