@@ -287,6 +287,7 @@ angular.module('starter.controllers', [])
         });
     })
 
+
     .controller('AddPollCtrl', function($scope, $ionicModal, MyPolls) {
         // Array to store the movies in
         $scope.polls = [];
@@ -316,18 +317,28 @@ angular.module('starter.controllers', [])
         };
     })
 
-    .controller('MapCtrl', function($scope) {
-        google.maps.event.addDomListener(window, "load", function() {
-            var myLatlng = new google.maps.LatLng(37.3000, -120.4833);
-
-            var mapOptions = {
-                center: myLatlng,
-                zoom: 10,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            };
-            var map = new google.maps.Map(document.getElementById("map"),mapOptions);
-
+    .controller('MapCtrl', function($scope, $ionicLoading) {
+        $scope.mapCreated = function(map) {
             $scope.map = map;
-        })
+        };
 
+        $scope.centerOnMe = function () {
+            console.log("Centering");
+            if (!$scope.map) {
+                return;
+            }
+
+            $scope.loading = $ionicLoading.show({
+                content: 'Getting current location...',
+                showBackdrop: false
+            });
+
+            navigator.geolocation.getCurrentPosition(function (pos) {
+                console.log('Got pos', pos);
+                $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
+                $scope.loading.hide();
+            }, function (error) {
+                alert('Unable to get location: ' + error.message);
+            });
+        };
     });
