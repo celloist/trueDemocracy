@@ -277,6 +277,9 @@ angular.module('starter.controllers', [])
             //    sourceType: Camera.PictureSourceType.CAMERA
             //});
         };
+        $scope.goToMap = function() {
+            $state.go('tab.account-map');
+        };
 })
 
 .controller('LoginCtrl', function($scope, auth, $state, store) {
@@ -332,6 +335,7 @@ angular.module('starter.controllers', [])
             $scope.pollModal.hide();
         };
     })
+
 
     .controller('MapCtrl', function($scope, $ionicLoading) {
         $scope.mapCreated = function(map) {
