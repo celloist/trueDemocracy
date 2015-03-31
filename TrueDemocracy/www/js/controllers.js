@@ -1,8 +1,11 @@
 angular.module('starter.controllers', [])
 
 .controller('DashCtrl', function($scope, auth, Polls, MyPolls) {
-        Polls.all();
-        MyPolls.all();
+        $scope.polls = [];
+        Polls.all($scope);
+        $scope.myPolls = [];
+        MyPolls.all($scope);
+        $scope.amountOfPolls = $scope.polls.length;
     })
 
 
@@ -311,11 +314,6 @@ angular.module('starter.controllers', [])
         $scope.closeNewPoll = function() {
             $scope.pollModal.hide();
         };
-
-        //$scope.deleteMovie = function(movie) {
-        //    var index = $scope.movies.indexOf(movie)
-        //    $scope.movies.splice(index, 1);
-        //};
     })
 
     .controller('MapCtrl', function($scope) {
