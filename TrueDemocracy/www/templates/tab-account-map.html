@@ -1,0 +1,19 @@
+
+<ion-view view-title="Map">
+    <ion-header-bar class="bar-positive">
+        <h1 class="title">Map</h1>
+    </ion-header-bar>
+
+    <ion-content scroll="false">
+        <map on-create="mapCreated(map)"></map>
+    </ion-content>
+
+    <ion-footer-bar class="bar-positive">
+        <a ng-click="centerOnMe()" class="button button-icon icon ion-navigate"></a>
+        <ion-nav-bar>
+            <ion-nav-back-button class="button-clear">
+                <i class="ion-arrow-left-c"></i> Back
+            </ion-nav-back-button>
+        </ion-nav-bar>
+    </ion-footer-bar>
+</ion-view>
