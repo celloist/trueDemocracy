@@ -6,12 +6,40 @@ angular.module('starter.controllers', [])
     })
 
 
-.controller('PollsCtrl', function($scope, Polls, auth, $ionicSideMenuDelegate, $ionicPopup, superCache) {
+.controller('PollsCtrl', function($scope, Polls, auth, $ionicSideMenuDelegate, $ionicPopup, Socket) {
 
+        var currentRoom;
         $scope.hasSelectedPoll = false;
         $scope.hasVotedOn = false;
         $scope.polls = [];
         $scope.votedOn = [];
+
+        Socket.on('poll:test', function(data){
+           console.log(data);
+        });
+
+        Socket.on('poll:increment', function (data) {
+            for(var i = 0; i < $scope.polls.length; i++){
+                if($scope.polls[i]._id == data.pollId){
+                    switch (data.ratingType){
+                        case "yay" :
+                            $scope.yays += 1;
+                            console.log($scope.yays);
+                            break;
+                        case "nay" :
+                            $scope.nays += 1;
+                            console.log($scope.nays);
+                            break;
+                        case "neutral" :
+                            $scope.neutral += 1;
+                            console.log($scope.neutral);
+                            break;
+                    }
+                    return;
+                }
+            }
+        });
+
 
         Polls.all($scope);
 
@@ -29,6 +57,13 @@ angular.module('starter.controllers', [])
         };
 
         $scope.getPoll = function(pollIndex){
+
+            if(currentRoom) {
+         //       Socket.leave(currentRoom);
+            }
+
+            $scope.hasVotedOn = false;
+
             if(!$scope.hasSelectedPoll){
                 $scope.hasSelectedPoll = true;
             }
@@ -36,7 +71,9 @@ angular.module('starter.controllers', [])
 
             $scope.pollDetail = $scope.polls[pollIndex];
 
-            checkIfHasVotedOnPoll($scope.pollDetail._id);
+            currentRoom = $scope.pollDetail._id;
+
+            checkIfUserHasVotedOnPoll($scope.pollDetail._id);
 
             $scope.yays = $scope.pollDetail.yays.length;
             $scope.nays = $scope.pollDetail.nays.length;
@@ -52,20 +89,20 @@ angular.module('starter.controllers', [])
                 if(res) {
                     Polls.addRating(poll, ratingType, $scope);
                     $scope.hasVotedOn = true;
+                    $scope.votedOn.push(poll._id);
                 }else{
 
                 }
             });
         };
 
-        function checkIfHasVotedOnPoll(pollId){
+        function checkIfUserHasVotedOnPoll(pollId){
             for(var i = 0; i < $scope.votedOn.length; i++){
-                if(pollId === $scope.votedOn[i]){
+                if(pollId == $scope.votedOn[i]){
                     $scope.hasVotedOn = true;
-                    return;
+                    break;
                 }
             }
-            $scope.hasVotedOn = false;
         }
 })
 
@@ -186,7 +223,7 @@ angular.module('starter.controllers', [])
         };
 })
 
-.controller('AccountCtrl', function($scope, auth, store, $ionicPopup, $state, Camera, $window) {
+.controller('AccountCtrl', function($scope, auth, store, $ionicPopup, $state, Camera, $window, Socket) {
   $scope.settings = {
     enableFriends: true
   };
@@ -208,34 +245,30 @@ angular.module('starter.controllers', [])
         };
 
         $scope.getPhoto = function() {
+            console.log("inside");
 
-            Camera.getPicture().then(function (imageURI) {
-                console.log("Image = " + imageURI);
-
-                var image = document.getElementById('myImage');
-                image.src = "data:image/jpeg;base64," + imageURI;
-
-               // $scope.lastPhoto = imageURI;
-            }, function (err) {
-                console.log(err);
-            }, {
-                quality: 75,
-                targetWidth: 320,
-                targetHeight: 320,
-                saveToPhotoAlbum: false,
-                destinationType: Camera.DestinationType.DATA_URL,
-                sourceType: Camera.PictureSourceType.CAMERA
+            Socket.on('poll:test', 'test', function (data) {
+                console.log("inside");
+                console.log(data);
             });
+            //Camera.getPicture().then(function (imageURI) {
+            //    console.log("Image = " + imageURI);
+            //
+            //    var image = document.getElementById('myImage');
+            //    image.src = "data:image/jpeg;base64," + imageURI;
+            //
+            //   // $scope.lastPhoto = imageURI;
+            //}, function (err) {
+            //    console.log(err);
+            //}, {
+            //    quality: 75,
+            //    targetWidth: 320,
+            //    targetHeight: 320,
+            //    saveToPhotoAlbum: false,
+            //    destinationType: Camera.DestinationType.DATA_URL,
+            //    sourceType: Camera.PictureSourceType.CAMERA
+            //});
         };
-
-        function onSuccess(imageData) {
-            var image = document.getElementById('myImage');
-            image.src = "data:image/jpeg;base64," + imageData;
-        }
-
-        function onFail(message) {
-            alert('Failed because: ' + message);
-        }
 })
 
 .controller('LoginCtrl', function($scope, auth, $state, store) {
