@@ -20,7 +20,7 @@ angular.module('starter.services', [])
                 return polls;
             },
             remove: function(poll, $scope, loadingIndicator) {
-                $http.delete('https://sleepy-reaches-3503.herokuapp.com/api/polls/' + poll._id)
+                $http.delete('https://sleepy-reaches-3503.herokuapp.com/api/polls/' + poll._id + '?userId='+'auth0|55008768f9ffe30c45cf506b')
                     .success(function(status){
                         $scope.polls.splice($scope.polls.indexOf(poll), 1);
                         $scope.hasSelectedPoll = false;
@@ -71,9 +71,9 @@ angular.module('starter.services', [])
                 $http.get('https://sleepy-reaches-3503.herokuapp.com/api/polls?userId='+'auth0|55008768f9ffe30c45cf506b')
                     .success(function(data){
                         polls = data.data;
-
-                        $scope.votedOn = data.votedOn;
                         $scope.polls = polls;
+                        $scope.votedOn = data.votedOn;
+                        console.log(data.votedOn);
                     })
                     .error(function(data){
                         console.log(data);
@@ -95,7 +95,7 @@ angular.module('starter.services', [])
             },
             addRating : function(poll, ratingType, $scope){
                // console.log(ratingType);
-                $http.put('https://sleepy-reaches-3503.herokuapp.com/api/polls/' + poll._id + '/addRating', {ratingType: ratingType})
+                $http.put('https://sleepy-reaches-3503.herokuapp.com/api/polls/' + poll._id + '/addRating?userId='+'auth0|55008768f9ffe30c45cf506b', {ratingType: ratingType})
                     .success(function(status){
                         switch(ratingType){
                             case "yay" :
@@ -114,6 +114,50 @@ angular.module('starter.services', [])
             }
         }
 }])
+
+.factory('Socket', function ($rootScope) {
+        var socket = io.connect('https://sleepy-reaches-3503.herokuapp.com');
+        return {
+            on: function (eventName, callback) {
+                socket.on(eventName, function () {
+                    var args = arguments;
+                    $rootScope.$apply(function () {
+                        callback.apply(socket, args);
+                    });
+                });
+            },
+            emit: function (eventName, data, callback) {
+                socket.emit(eventName, data, function () {
+                    var args = arguments;
+                    $rootScope.$apply(function () {
+                        if (callback) {
+                            callback.apply(socket, args);
+                        }
+                    });
+                })
+            },
+            join : function(eventName, callback){
+                socket.join(eventName, function () {
+                    var arg = arguments;
+                    $rootScope.$apply(function(){
+                        callback.apply(socket, args);
+                    });
+                });
+            },
+            leave : function(eventName, callback){
+                socket.leave(eventName, function () {
+                    var arg = arguments;
+                    $rootScope.$apply(function(){
+                        callback.apply(socket, args);
+                    });
+                });
+            },
+
+            get: function(){
+                return socket;
+            }
+        };
+})
 
 .factory('Camera', ['$q', function($q) {
 
