@@ -97,17 +97,17 @@ angular.module('starter.services', [])
                // console.log(ratingType);
                 $http.put('https://sleepy-reaches-3503.herokuapp.com/api/polls/' + poll._id + '/addRating?userId='+'auth0|55008768f9ffe30c45cf506b', {ratingType: ratingType})
                     .success(function(status){
-                        switch(ratingType){
-                            case "yay" :
-                                $scope.yays += 1;
-                                break;
-                            case "nay" :
-                                $scope.nays += 1;
-                                break;
-                            case "neutral" :
-                                $scope.neutral += 1;
-                                break;
-                        }
+                        //switch(ratingType){
+                        //    case "yay" :
+                        //        $scope.yays += 1;
+                        //        break;
+                        //    case "nay" :
+                        //        $scope.nays += 1;
+                        //        break;
+                        //    case "neutral" :
+                        //        $scope.neutral += 1;
+                        //        break;
+                        //}
                     }).error(function(status){
 
                     });
