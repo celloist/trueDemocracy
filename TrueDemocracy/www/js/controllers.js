@@ -2,10 +2,29 @@ angular.module('starter.controllers', [])
 
 .controller('DashCtrl', function($scope, auth, Polls, MyPolls) {
         $scope.polls = [];
+        $scope.votedOn = [];
+        $scope.yays = 0;
+        $scope.nays = 0;
+        $scope.neutral = 0;
         Polls.all($scope);
         $scope.myPolls = [];
         MyPolls.all($scope);
-        $scope.amountOfPolls = $scope.polls.length;
+
+        $scope.$watchCollection('polls', function(newPolls, oldNames) {
+            console.log(newPolls);
+            $scope.polls = newPolls;
+            $scope.amountOfVotablePolls = ($scope.polls.length - $scope.votedOn.length);
+        });
+
+        $scope.$watchCollection('myPolls', function(newPolls, oldNames) {
+            //console.log(newPolls);
+            $scope.myPolls = newPolls;
+            for(i = 0; i < $scope.myPolls.length; i++){
+                $scope.yays += $scope.myPolls[i].yays.length;
+                $scope.nays += $scope.myPolls[i].nays.length;
+                $scope.neutral += $scope.myPolls[i].neutral.length;
+            }
+        });
     })
 
 
@@ -99,18 +118,15 @@ angular.module('starter.controllers', [])
 })
 
 .controller('MyPollsCtrl', function($scope, MyPolls, $ionicPopup,  $ionicModal, $ionicLoading, $ionicSideMenuDelegate) {
-  $scope.polls = MyPolls.all();
 
-
-        $scope.hasSelectedPoll = false;
-
-        $scope.polls = [];
-
+        $scope.myPolls = [];
         MyPolls.all($scope);
 
-        $scope.$watchCollection('polls', function(newPolls, oldNames) {
-            $scope.polls = newPolls;
+        $scope.$watchCollection('myPolls', function(newPolls, oldNames) {
+            $scope.myPolls = newPolls;
         });
+
+        $scope.hasSelectedPoll = false;
 
         // Create and load the Modal
         $ionicModal.fromTemplateUrl('add-poll.html', function(modal) {
@@ -187,7 +203,7 @@ angular.module('starter.controllers', [])
                 $scope.hasSelectedPoll = true;
             }
             $ionicSideMenuDelegate.toggleLeft();
-            $scope.pollDetail = $scope.polls[pollId];
+            $scope.pollDetail = $scope.myPolls[pollId];
             $scope.yays = $scope.pollDetail.yays.length;
             $scope.nays = $scope.pollDetail.nays.length;
             $scope.neutral = $scope.pollDetail.neutral.length;

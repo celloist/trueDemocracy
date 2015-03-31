@@ -12,7 +12,7 @@ angular.module('starter.services', [])
             all : function($scope){
                 $http.get('https://sleepy-reaches-3503.herokuapp.com/api/users/' + 'auth0|55008768f9ffe30c45cf506b' + '/polls')
                     .success(function(data){
-                        $scope.polls = data;
+                        $scope.myPolls = data;
                     })
                     .error(function(data){
                         console.log(data);
@@ -73,7 +73,6 @@ angular.module('starter.services', [])
                         polls = data.data;
                         $scope.polls = polls;
                         $scope.votedOn = data.votedOn;
-                        console.log(data.votedOn);
                     })
                     .error(function(data){
                         console.log(data);

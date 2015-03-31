@@ -47,7 +47,7 @@
         </ion-header-bar>
         <ion-content>
             <!--<ion-item class="item-icon-right" ng-repeat="poll in polls" type="item-text-wrap" href="#/tab/chats/{{$scope.index = $index}}">-->
-            <ion-item class="item-icon-right" ng-repeat="poll in polls" type="item-text-wrap" on-tap="getPoll($index)">
+            <ion-item class="item-icon-right" ng-repeat="poll in myPolls" type="item-text-wrap" on-tap="getPoll($index)">
                 <h2>{{poll.title}}</h2>
                 <p>{{poll.shortDescription}}</p>
                 <i class="icon ion-chevron-right icon-accessory"></i>
