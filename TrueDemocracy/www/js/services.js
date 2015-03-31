@@ -68,7 +68,7 @@ angular.module('starter.services', [])
 
         return {
             all : function($scope){
-                $http.get('http://localhost:8080/api/polls?userId='+'auth0|55008768f9ffe30c45cf506b' + '&showOwnPolls='+store.get('showOwnPolls'))
+                $http.get('https://sleepy-reaches-3503.herokuapp.com/api/polls?userId='+'auth0|55008768f9ffe30c45cf506b' + '&showOwnPolls='+store.get('showOwnPolls'))
                     .success(function(data){
                         polls = data.data;
                         $scope.polls = polls;
