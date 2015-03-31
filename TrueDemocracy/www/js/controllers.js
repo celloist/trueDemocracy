@@ -8,15 +8,10 @@ angular.module('starter.controllers', [])
 
 .controller('PollsCtrl', function($scope, Polls, auth, $ionicSideMenuDelegate, $ionicPopup, Socket) {
 
-        var currentRoom;
         $scope.hasSelectedPoll = false;
         $scope.hasVotedOn = false;
         $scope.polls = [];
         $scope.votedOn = [];
-
-        Socket.on('poll:test', function(data){
-           console.log(data);
-        });
 
         Socket.on('poll:increment', function (data) {
             console.log(data);
@@ -25,22 +20,21 @@ angular.module('starter.controllers', [])
                     switch (data.ratingType){
                         case "yay" :
                             $scope.yays += 1;
-                            console.log($scope.yays);
+                            $scope.polls[i].yays.push(true);
                             break;
                         case "nay" :
                             $scope.nays += 1;
-                            console.log($scope.nays);
+                            $scope.polls[i].nays.push(true);
                             break;
                         case "neutral" :
                             $scope.neutral += 1;
-                            console.log($scope.neutral);
+                            $scope.polls[i].neutral.push(true);
                             break;
                     }
                     return;
                 }
             }
         });
-
 
         Polls.all($scope);
 
@@ -59,10 +53,6 @@ angular.module('starter.controllers', [])
 
         $scope.getPoll = function(pollIndex){
 
-            if(currentRoom) {
-         //       Socket.leave(currentRoom);
-            }
-
             $scope.hasVotedOn = false;
 
             if(!$scope.hasSelectedPoll){
@@ -72,9 +62,7 @@ angular.module('starter.controllers', [])
 
             $scope.pollDetail = $scope.polls[pollIndex];
 
-            currentRoom = $scope.pollDetail._id;
-
-            //checkIfUserHasVotedOnPoll($scope.pollDetail._id);
+            checkIfUserHasVotedOnPoll($scope.pollDetail._id);
 
             $scope.yays = $scope.pollDetail.yays.length;
             $scope.nays = $scope.pollDetail.nays.length;
