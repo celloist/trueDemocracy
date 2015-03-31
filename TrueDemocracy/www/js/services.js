@@ -20,7 +20,7 @@ angular.module('starter.services', [])
                 return polls;
             },
             remove: function(poll, $scope, loadingIndicator) {
-                $http.delete('http://localhost:8080/api/polls/' + poll._id + '?userId='+'auth0|55008768f9ffe30c45cf506b')
+                $http.delete('https://sleepy-reaches-3503.herokuapp.com/api/polls/' + poll._id + '?userId='+'auth0|55008768f9ffe30c45cf506b')
                     .success(function(status){
                         $scope.polls.splice($scope.polls.indexOf(poll), 1);
                         $scope.hasSelectedPoll = false;
@@ -68,7 +68,7 @@ angular.module('starter.services', [])
 
         return {
             all : function($scope){
-                $http.get('http://localhost:8080/api/polls?userId='+'auth0|55008768f9ffe30c45cf506b')
+                $http.get('https://sleepy-reaches-3503.herokuapp.com/api/polls?userId='+'auth0|55008768f9ffe30c45cf506b')
                     .success(function(data){
                         polls = data.data;
                         $scope.polls = polls;
@@ -95,7 +95,7 @@ angular.module('starter.services', [])
             },
             addRating : function(poll, ratingType, $scope){
                // console.log(ratingType);
-                $http.put('http://localhost:8080/api/polls/' + poll._id + '/addRating?userId='+'auth0|55008768f9ffe30c45cf506b', {ratingType: ratingType})
+                $http.put('https://sleepy-reaches-3503.herokuapp.com/api/polls/' + poll._id + '/addRating?userId='+'auth0|55008768f9ffe30c45cf506b', {ratingType: ratingType})
                     .success(function(status){
                         switch(ratingType){
                             case "yay" :
@@ -116,7 +116,7 @@ angular.module('starter.services', [])
 }])
 
 .factory('Socket', function ($rootScope) {
-        var socket = io.connect('http://localhost:8080');
+        var socket = io.connect('https://sleepy-reaches-3503.herokuapp.com');
         return {
             on: function (eventName, callback) {
                 socket.on(eventName, function () {

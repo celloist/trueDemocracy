@@ -19,6 +19,7 @@ angular.module('starter.controllers', [])
         });
 
         Socket.on('poll:increment', function (data) {
+            console.log(data);
             for(var i = 0; i < $scope.polls.length; i++){
                 if($scope.polls[i]._id == data.pollId){
                     switch (data.ratingType){
@@ -73,7 +74,7 @@ angular.module('starter.controllers', [])
 
             currentRoom = $scope.pollDetail._id;
 
-            checkIfUserHasVotedOnPoll($scope.pollDetail._id);
+            //checkIfUserHasVotedOnPoll($scope.pollDetail._id);
 
             $scope.yays = $scope.pollDetail.yays.length;
             $scope.nays = $scope.pollDetail.nays.length;
