@@ -1,12 +1,14 @@
 <ion-view view-title="Dashboard">
   <ion-content>
-      <ion-header-bar class="bar-positive">
-      </ion-header-bar>
+      <!--<ion-header-bar class="bar-positive">-->
+      <!--</ion-header-bar>-->
     <div class="list card">
       <div class="item item-divider">Amount of votes on your polls</div>
       <div class="item item-body">
         <div>
-          {{}}
+          Yays: {{yays}}
+          Nays: {{nays}}
+          Neutral: {{neutral}}
         </div>
       </div>
     </div>
@@ -14,7 +16,7 @@
       <div class="item item-divider">Amount of votes you've cast</div>
       <div class="item item-body">
         <div>
-          {{}}
+          {{votedOn.length}}
         </div>
       </div>
     </div>
@@ -22,7 +24,7 @@
       <div class="item item-divider">Current amount of polls you can vote on</div>
       <div class="item item-body">
         <div>
-          {{amountOfPolls}}
+          {{amountOfVotablePolls}}
         </div>
       </div>
     </div>
