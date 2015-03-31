@@ -9,6 +9,7 @@ angular.module('starter.controllers', [])
         Polls.all($scope);
         $scope.myPolls = [];
         MyPolls.all($scope);
+        $scope.amountOfVotablePolls = [];
 
         $scope.$watchCollection('polls', function(newPolls, oldNames) {
             console.log(newPolls);
@@ -60,6 +61,10 @@ angular.module('starter.controllers', [])
 
         Polls.all($scope);
 
+        $scope.$watchCollection('votedOn', function(newPolls, oldNames) {
+            $scope.votedOn = newPolls;
+        })
+
         $scope.$watchCollection('polls', function(newPolls, oldNames) {
             $scope.polls = newPolls;
         });
@@ -84,11 +89,11 @@ angular.module('starter.controllers', [])
 
             $scope.pollDetail = $scope.polls[pollIndex];
 
-            checkIfUserHasVotedOnPoll($scope.pollDetail._id);
-
             $scope.yays = $scope.pollDetail.yays.length;
             $scope.nays = $scope.pollDetail.nays.length;
             $scope.neutral = $scope.pollDetail.neutral.length;
+
+            checkIfUserHasVotedOnPoll($scope.pollDetail._id);
         };
 
         $scope.showConfirmRating = function(poll, ratingType) {

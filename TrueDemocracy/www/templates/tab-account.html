@@ -1,25 +1,29 @@
 <ion-view view-title="Account">
   <ion-content>
-      <ion-header-bar class="bar-positive">
-
-      </ion-header-bar>
+      <ion-nav-bar class="bar-stable">
+          <ion-nav-back-button>
+          </ion-nav-back-button>
+      </ion-nav-bar>
     <ion-list>
       <ion-item class="item-toggle">
-        Enable Friends
+        Show own polls
         <label class="toggle">
-          <input type="checkbox" ng-model="settings.enableFriends">
+          <input type="checkbox" ng-model="settings.showOwnPolls">
           <div class="track">
             <div class="handle"></div>
           </div>
         </label>
       </ion-item>
+        <ion-item>
         <button class="button button-assertive" ng-click="showConfirmLogout()">
             Logout
         </button>
-
+        </ion-item>
+        <ion-item>
         <button class="button button-assertive" ng-click="getPhoto()">
             Camera
         </button>
+        </ion-item>
     </ion-list>
       <img id="myImage" src="" height="200px" width="200px">
 
