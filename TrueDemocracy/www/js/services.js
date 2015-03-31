@@ -62,13 +62,13 @@ angular.module('starter.services', [])
         }
 }])
 
-.factory('Polls',['auth', '$http', function(auth, $http) {
+.factory('Polls',['auth', '$http', 'store', function(auth, $http, store) {
 
         var polls = [];
 
         return {
             all : function($scope){
-                $http.get('https://sleepy-reaches-3503.herokuapp.com/api/polls?userId='+'auth0|55008768f9ffe30c45cf506b')
+                $http.get('http://localhost:8080/api/polls?userId='+'auth0|55008768f9ffe30c45cf506b' + '&showOwnPolls='+store.get('showOwnPolls'))
                     .success(function(data){
                         polls = data.data;
                         $scope.polls = polls;
