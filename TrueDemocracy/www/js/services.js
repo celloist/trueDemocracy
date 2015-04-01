@@ -114,56 +114,26 @@ angular.module('starter.services', [])
         }
 }])
 
-// TODO
+
     .factory('Users', ['auth', '$http', function(auth, $http) {
 
         var users = [];
 
         return {
             all : function($scope){
-                $http.get('https://sleepy-reaches-3503.herokuapp.com/api/users/' + 'auth0|55008768f9ffe30c45cf506b' + '/polls')
+                $http.get('https://sleepy-reaches-3503.herokuapp.com/api/users')
                     .success(function(data){
-                        $scope.myPolls = data;
+                        $scope.users = data;
                     })
                     .error(function(data){
                         console.log(data);
                     });
-                return polls;
+                return users;
             },
-            remove: function(poll, $scope, loadingIndicator) {
-                $http.delete('https://sleepy-reaches-3503.herokuapp.com/api/polls/' + poll._id + '?userId='+'auth0|55008768f9ffe30c45cf506b')
-                    .success(function(status){
-                        $scope.myPolls.splice($scope.myPolls.indexOf(poll), 1);
-                        $scope.hasSelectedPoll = false;
-                        loadingIndicator.hide();
-                    })
-                    .error(function(status){
-                        console.log(status);
-                    });
-            },
-            get : function(pollId){
-                return polls[pollId];
-            },
-            insert : function(poll, $scope, loadingIndicator){
-                if (poll.title != "") {
-                    $http.post('https://sleepy-reaches-3503.herokuapp.com/api/users/' + 'auth0|55008768f9ffe30c45cf506b' + '/polls', {title: poll.title, shortDescription: poll.shortDescription, longDescription: poll.longDescription})
-                        .success(function (data) {
-                            loadingIndicator.hide();
-                            $scope.pollModal.hide();
-                            poll.title = "";
-                            $scope.myPolls.push(data.data);
-                        })
-                        .error(function (data) {
-                            //TODO flash error that something went wrong
-                            console.log(data);
-                        })
-                }
-            },
-            update : function(poll, $scope, loadingIndicator){
-                $http.put('https://sleepy-reaches-3503.herokuapp.com/polls/' + poll._id, {title: poll.title, shortDescription: poll.shortDescription, longDescription: poll.longDescription})
+            update : function(user, $scope){
+                $http.put('https://sleepy-reaches-3503.herokuapp.com/api/users/' + auth.profile.id, {lat: user.lat, long: user.long})
                     .success(function(data){
-                        loadingIndicator.hide();
-                        $scope.pollEditModal.hide();
+                    console.log("succes " + data);
                     })
                     .error(function (data) {
                         //TODO flash error that something went wrong

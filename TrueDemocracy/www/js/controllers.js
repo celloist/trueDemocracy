@@ -378,58 +378,18 @@ angular.module('starter.controllers', [])
     })
 
 
-    .controller('MapCtrl', function($scope, $ionicLoading) {
+    .controller('MapCtrl', function($scope, $ionicLoading, Users) {
        //user position
-       var long;
-       var lat;
-
+        var long;
+        var lat;
+        var user;
+        $scope.users = [];
 
         $scope.mapCreated = function(map) {
             $scope.map = map;
         };
         var bounds = new google.maps.LatLngBounds();
-        var map = $scope.map
-
-       //markers user markers come here TODO
-       var markers = [
-            ['London Eye, London', 51.503454,-0.119562],
-            ['Palace of Westminster, London', 51.499633,-0.124755]
-       ];
-
-       //info about user TODO
-       var infoWindowContent = [
-            ['<div class="info_content">' +
-            '<h3>London Eye</h3>' +
-            '<p>The London Eye is a giant Ferris wheel situated on the banks of the River Thames. The entire structure is 135 metres (443 ft) tall and the wheel has a diameter of 120 metres (394 ft).</p>' +        '</div>'],
-            ['<div class="info_content">' +
-            '<h3>Palace of Westminster</h3>' +
-            '<p>The Palace of Westminster is the meeting place of the House of Commons and the House of Lords, the two houses of the Parliament of the United Kingdom. Commonly known as the Houses of Parliament after its tenants.</p>' +
-            '</div>']
-       ];
-
-       // Loop through our array of markers & place each one on the map
-       for(var i = 0; i < markers.length; i++ ) {
-            var position = new google.maps.LatLng(markers[i][1], markers[i][2]);
-            bounds.extend(position);
-            marker = new google.maps.Marker({
-                position: position,
-                map: map,
-                title: markers[i][0]
-            });
-
-            // Allow each marker to have an info window
-            google.maps.event.addListener(marker, 'click', (function(marker, i) {
-                return function() {
-                    infoWindow.setContent(infoWindowContent[i][0]);
-                    infoWindow.open(map, marker);
-                }
-            })(marker, i));
-
-            // Automatically center the map fitting all markers on the screen
-
-       }
-
-
+        var map = $scope.map;
 
         $scope.centerOnMe = function () {
             console.log("Centering");
@@ -447,10 +407,27 @@ angular.module('starter.controllers', [])
             //TODO add long and lat to user
             navigator.geolocation.getCurrentPosition(function (pos) {
                 console.log('Got pos', pos);
-                long = pos.coords.longitude;
-                lat = pos.coords.latitude
+                user.long = pos.coords.longitude;
+                user.lat = pos.coords.latitude;
+
+                $scope.users.update(user,$scope);
+
                 $scope.map.setCenter(new google.maps.LatLng(lat, long));
                 $scope.loading.hide();
+
+                Users.all($scope);
+                var markers = $scope.users;
+
+                markers.forEach(function(mark) {
+                    var position = new google.maps.LatLng(mark.lat, mark.long);
+                    bounds.extend(position);
+                    marker = new google.maps.Marker({
+                        position: position,
+                        map: map,
+                        title: mark.userID
+                    });
+                });
+
             }, function (error) {
                 alert('Unable to get location: ' + error.message);
             });
