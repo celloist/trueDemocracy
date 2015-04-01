@@ -210,15 +210,26 @@ angular.module('starter.services', [])
 }])
 
     .directive('map', function() {
+        var lat = 52.67593;
+        var long = 6.881388;
+        navigator.geolocation.getCurrentPosition(function (pos) {
+            console.log('Got pos', pos);
+            lat = pos.coords.latitude
+            long= pos.coords.longitude
+        }, function (error) {
+            alert('Unable to get location: ' + error.message);
+        });
         return {
             restrict: 'E',
             scope: {
                 onCreate: '&'
             },
+
             link: function ($scope, $element, $attr) {
                 function initialize() {
+
                     var mapOptions = {
-                        center: new google.maps.LatLng(52.67593, 6.881388),
+                        center: new google.maps.LatLng(lat,long),
                         zoom: 8,
                         mapTypeId: google.maps.MapTypeId.ROADMAP
                     };
