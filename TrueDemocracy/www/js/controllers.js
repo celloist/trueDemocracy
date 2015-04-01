@@ -386,8 +386,6 @@ angular.module('starter.controllers', [])
 
     .controller('MapCtrl', function($scope, $ionicLoading, Users) {
        //user position
-        var long;
-        var lat;
         var user;
         $scope.users = [];
 
