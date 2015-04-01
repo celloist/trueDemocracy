@@ -289,6 +289,10 @@ angular.module('starter.controllers', [])
             });
         };
 
+        $scope.callDeveloper = function(){
+            document.location.href = 'tel:12345678';
+        };
+
         $scope.getPhoto = function() {
             console.log("inside");
 
