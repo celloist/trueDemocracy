@@ -44,7 +44,6 @@ angular.module('starter.controllers', [])
         Socket.on('poll:increment', function (data) {
             console.log(data);
             $cordovaVibration.vibrate(1000);
-            navigator.notification.vibrate(1000);
             for(var i = 0; i < $scope.polls.length; i++){
                 if($scope.polls[i]._id == data.pollId){
                     switch (data.ratingType){
@@ -52,7 +51,6 @@ angular.module('starter.controllers', [])
                             $scope.yays += 1;
                             $scope.polls[i].yays.push(true);
                             $cordovaVibration.vibrate(1000);
-                            navigator.notification.vibrate(1000);
                             break;
                         case "nay" :
                             $scope.nays += 1;
@@ -330,27 +328,27 @@ angular.module('starter.controllers', [])
 })
 
 .controller('LoginCtrl', function($scope, auth, $state, store) {
-        //auth.signin({
-        //    authParams: {
-        //        // This asks for the refresh token
-        //        // So that the user never has to log in again
-        //        scope: 'openid offline_access',
-        //        // This is the device name
-        //        device: 'Mobile device'
-        //    },
-        //    // Make the widget non closeable
-        //    standalone: true
-        //}, function(profile, token, accessToken, state, refreshToken) {
-        //    // Login was successful
-        //    // We need to save the information from the login
-        //    store.set('profile', profile);
-        //    store.set('token', token);
-        //    store.set('refreshToken', refreshToken);
-        //    $state.go('tab.dash');
-        //}, function(error) {
-        //    // Oops something went wrong during login:
-        //    console.log("There was an error logging in", error);
-        //});
+        auth.signin({
+            authParams: {
+                // This asks for the refresh token
+                // So that the user never has to log in again
+                scope: 'openid offline_access',
+                // This is the device name
+                device: 'Mobile device'
+            },
+            // Make the widget non closeable
+            standalone: true
+        }, function(profile, token, accessToken, state, refreshToken) {
+            // Login was successful
+            // We need to save the information from the login
+            store.set('profile', profile);
+            store.set('token', token);
+            store.set('refreshToken', refreshToken);
+            $state.go('tab.dash');
+        }, function(error) {
+            // Oops something went wrong during login:
+            console.log("There was an error logging in", error);
+        });
     })
 
 
@@ -386,7 +384,7 @@ angular.module('starter.controllers', [])
 
     .controller('MapCtrl', function($scope, $ionicLoading, Users) {
        //user position
-        var user;
+        var user = [];
         $scope.users = [];
 
         $scope.mapCreated = function(map) {
@@ -402,6 +400,7 @@ angular.module('starter.controllers', [])
                 return;
             }
 
+
             $scope.loading = $ionicLoading.show({
                 content: 'Getting current location...',
                 showBackdrop: false
@@ -409,29 +408,43 @@ angular.module('starter.controllers', [])
 
 
 
-            //TODO add long and lat to user
+            ////TODO add long and lat to user
+            //navigator.geolocation.getCurrentPosition(function (pos) {
+            //    console.log('Got pos', pos.coords.longitude);
+            //    user.long = pos.coords.longitude;
+            //    user.lat = pos.coords.latitude;
+            //
+            //    Users.update(user,$scope);
+            //
+            //    $scope.map.setCenter(new google.maps.LatLng(pos.coords.longitude, pos.coords.latitude));
+            //    $scope.loading.hide();
+            //
+            //    Users.all($scope);
+            //    var markers = $scope.users;
+            //
+            //    markers.forEach(function(mark) {
+            //        var position = new google.maps.LatLng(mark.lat, mark.long);
+            //        bounds.extend(position);
+            //        var marker = new google.maps.Marker({
+            //            position: position,
+            //            map: map,
+            //            title: mark.userID
+            //        });
+            //
+            //    });
+
             navigator.geolocation.getCurrentPosition(function (pos) {
-                console.log('Got pos', pos);
-                user.long = pos.coords.longitude;
-                user.lat = pos.coords.latitude;
+                console.log('Got pos', pos.coords.latitude);
+                    user.long = pos.coords.longitude;
+                    user.lat = pos.coords.latitude;
 
-                $scope.users.update(user,$scope);
+                var check = Users.update(user,$scope);
+                    console.log(check);
 
-                $scope.map.setCenter(new google.maps.LatLng(pos.coords.longitude, pos.coords.latitude));
+
+                $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
                 $scope.loading.hide();
 
-                Users.all($scope);
-                var markers = $scope.users;
-
-                markers.forEach(function(mark) {
-                    var position = new google.maps.LatLng(mark.lat, mark.long);
-                    bounds.extend(position);
-                    marker = new google.maps.Marker({
-                        position: position,
-                        map: map,
-                        title: mark.userID
-                    });
-                });
 
             }, function (error) {
                 alert('Unable to get location: ' + error.message);

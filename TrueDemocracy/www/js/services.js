@@ -34,7 +34,7 @@ angular.module('starter.services', [])
             },
             insert : function(poll, $scope, loadingIndicator){
                 if (poll.title != "") {
-                    $http.post('https://sleepy-reaches-3503.herokuapp.com/api/users/auth0|55008768f9ffe30c45cf506b/polls', {title: poll.title, shortDescription: poll.shortDescription, longDescription: poll.longDescription})
+                    $http.post('https://sleepy-reaches-3503.herokuapp.com/api/users/'+auth.profile.userId+'/polls', {title: poll.title, shortDescription: poll.shortDescription, longDescription: poll.longDescription})
                         .success(function (data) {
                             loadingIndicator.hide();
                             $scope.pollModal.hide();
@@ -67,7 +67,7 @@ angular.module('starter.services', [])
 
         return {
             all : function($scope){
-                $http.get('https://sleepy-reaches-3503.herokuapp.com/api/polls?userId=auth0|55008768f9ffe30c45cf506b&showOwnPolls='+store.get('showOwnPolls'))
+                $http.get('https://sleepy-reaches-3503.herokuapp.com/api/polls?userId='+auth.profile.userId+'&showOwnPolls='+store.get('showOwnPolls'))
                     .success(function(data){
                         polls = data.data;
                         $scope.polls = polls;
@@ -92,9 +92,8 @@ angular.module('starter.services', [])
                 return polls[pollId];
             },
             addRating : function(poll, ratingType, $scope){
-               // console.log(ratingType);
-               // $http.put('https://sleepy-reaches-3503.herokuapp.com/api/polls/' + poll._id + '/addRating?userId='+auth.profile.userId, {ratingType: ratingType})
-                $http.put('https://sleepy-reaches-3503.herokuapp.com/api/polls/' + poll._id + '/addRating?userId='+'auth0|55008768f9ffe30c45cf506b', {ratingType: ratingType})
+               console.log(ratingType);
+               $http.put('https://sleepy-reaches-3503.herokuapp.com/api/polls/' + poll._id + '/addRating?userId='+auth.profile.userId, {ratingType: ratingType})
 
                     .success(function(status){
                         //switch(ratingType){
@@ -132,12 +131,13 @@ angular.module('starter.services', [])
                 return users;
             },
             update : function(user, $scope){
-                $http.put('https://sleepy-reaches-3503.herokuapp.com/api/users/auth0|55008768f9ffe30c45cf506b', {lat: user.lat, long: user.long})
+                $http.put('https://sleepy-reaches-3503.herokuapp.com/api/users/'+auth.profile.userId, {lat: user.lat, long: user.long})
                     .success(function(data){
                     console.log("succes " + data);
+                        return "it worked";
                     })
                     .error(function (data) {
-                        //TODO flash error that something went wrong
+                        return "something went wrong"
                         console.log(data);
                     })
             }
@@ -243,9 +243,9 @@ angular.module('starter.services', [])
         var lat = 51.6915227;
         var long = 5.2962623;
         navigator.geolocation.getCurrentPosition(function (pos) {
-            console.log('Got pos', pos);
+            console.log('Got pos', pos.coords.longitude);
             lat = pos.coords.latitude
-            long= pos.coords.longitude
+            long = pos.coords.longitude
         }, function (error) {
             alert('Unable to get location: ' + error.message);
         });
@@ -304,6 +304,7 @@ angular.module('starter.services', [])
         return {
             vibrate: function (times) {
                 return navigator.notification.vibrate(times);
+
             },
             vibrateWithPattern: function (pattern, repeat) {
                 return navigator.notification.vibrateWithPattern(pattern, repeat);
