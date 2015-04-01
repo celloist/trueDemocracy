@@ -44,20 +44,25 @@ angular.module('starter.controllers', [])
         Socket.on('poll:increment', function (data) {
             console.log(data);
             $cordovaVibration.vibrate(1000);
+            navigator.notification.vibrate(1000);
             for(var i = 0; i < $scope.polls.length; i++){
                 if($scope.polls[i]._id == data.pollId){
                     switch (data.ratingType){
                         case "yay" :
                             $scope.yays += 1;
                             $scope.polls[i].yays.push(true);
+                            $cordovaVibration.vibrate(1000);
+                            navigator.notification.vibrate(1000);
                             break;
                         case "nay" :
                             $scope.nays += 1;
                             $scope.polls[i].nays.push(true);
+                            $cordovaVibration.vibrate(1000);
                             break;
                         case "neutral" :
                             $scope.neutral += 1;
                             $scope.polls[i].neutral.push(true);
+                            $cordovaVibration.vibrate(1000);
                             break;
                     }
                     return;
@@ -414,7 +419,7 @@ angular.module('starter.controllers', [])
 
                 $scope.users.update(user,$scope);
 
-                $scope.map.setCenter(new google.maps.LatLng(lat, long));
+                $scope.map.setCenter(new google.maps.LatLng(pos.coords.longitude, pos.coords.latitude));
                 $scope.loading.hide();
 
                 Users.all($scope);
@@ -435,3 +440,5 @@ angular.module('starter.controllers', [])
             });
         };
     });
+
+
