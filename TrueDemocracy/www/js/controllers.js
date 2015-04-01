@@ -127,7 +127,13 @@ angular.module('starter.controllers', [])
         }
 })
 
-.controller('MyPollsCtrl', function($scope, MyPolls, $ionicPopup,  $ionicModal, $ionicLoading, $ionicSideMenuDelegate) {
+.controller('MyPollsCtrl', function($scope, MyPolls, $ionicPopup,  $ionicModal, $ionicLoading, $ionicSideMenuDelegate, store) {
+
+        $scope.poll = {
+            title: store.get('newPollTitle'),
+            shortDescription: store.get('newPollShortDescription'),
+            longDescription: store.get('newPollLongDescription')
+        };
 
         $scope.myPolls = [];
         MyPolls.all($scope);
@@ -157,16 +163,32 @@ angular.module('starter.controllers', [])
                 showDelay: 0
             });
 
+            //Clearing modal
+            $scope.poll = {
+                title: "",
+                shortDescription: "",
+                longDescription: ""
+            };
+
+            //Removing stored data;
+            store.remove('newPollTitle');
+            store.remove('newPollShortDescription');
+            store.remove('newPollLongDescription');
+
             MyPolls.insert(poll, $scope, $ionicLoading);
         };
 
         // Open our new task modal
         $scope.newPoll= function() {
+            console.log(store.get('newPollTitle'));
             $scope.pollModal.show();
         };
 
         // Close the new task modal
-        $scope.closeNewPoll = function() {
+        $scope.closeNewPoll = function(poll) {
+            store.set("newPollTitle", poll.title);
+            store.set("newPollShortDescription", poll.shortDescription);
+            store.set("newPollLongDescription", poll.longDescription);
             $scope.pollModal.hide();
         };
 

@@ -10,7 +10,7 @@ angular.module('starter.services', [])
 
         return {
             all : function($scope){
-                $http.get('http://localhost:8080/api/users/' + 'auth0|55008768f9ffe30c45cf506b' + '/polls')
+                $http.get('https://sleepy-reaches-3503.herokuapp.com/api/users/' + 'auth0|55008768f9ffe30c45cf506b' + '/polls')
                     .success(function(data){
                         $scope.myPolls = data;
                     })
@@ -22,7 +22,7 @@ angular.module('starter.services', [])
             remove: function(poll, $scope, loadingIndicator) {
                 $http.delete('https://sleepy-reaches-3503.herokuapp.com/api/polls/' + poll._id + '?userId='+'auth0|55008768f9ffe30c45cf506b')
                     .success(function(status){
-                        $scope.polls.splice($scope.polls.indexOf(poll), 1);
+                        $scope.myPolls.splice($scope.myPolls.indexOf(poll), 1);
                         $scope.hasSelectedPoll = false;
                         loadingIndicator.hide();
                     })
@@ -40,7 +40,7 @@ angular.module('starter.services', [])
                             loadingIndicator.hide();
                             $scope.pollModal.hide();
                             poll.title = "";
-                            $scope.polls.push(data.data);
+                            $scope.myPolls.push(data.data);
                         })
                         .error(function (data) {
                             //TODO flash error that something went wrong
