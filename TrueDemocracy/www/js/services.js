@@ -1,5 +1,4 @@
 angular.module('starter.services', [])
-
 .factory('superCache', ['$cacheFactory', function($cacheFactory) {
         return $cacheFactory('super-cache');
 }])
@@ -94,7 +93,9 @@ angular.module('starter.services', [])
             },
             addRating : function(poll, ratingType, $scope){
                // console.log(ratingType);
-                $http.put('https://sleepy-reaches-3503.herokuapp.com/api/polls/' + poll._id + '/addRating?userId='+auth.profile.userId, {ratingType: ratingType})
+               // $http.put('https://sleepy-reaches-3503.herokuapp.com/api/polls/' + poll._id + '/addRating?userId='+auth.profile.userId, {ratingType: ratingType})
+                $http.put('https://sleepy-reaches-3503.herokuapp.com/api/polls/' + poll._id + '/addRating?userId='+'auth0|55008768f9ffe30c45cf506b', {ratingType: ratingType})
+
                     .success(function(status){
                         //switch(ratingType){
                         //    case "yay" :
@@ -280,4 +281,22 @@ angular.module('starter.services', [])
                 }
             }
         }
-    });
+    })
+
+.directive('browseTo', function ($ionicGesture) {
+    return {
+        restrict: 'A',
+        link: function ($scope, $element, $attrs) {
+            var handleTap = function (e) {
+               //voor uitbreiding
+                var inAppBrowser = window.open(encodeURI($attrs.browseTo), '_system');
+            };
+            var tapGesture = $ionicGesture.on('tap', handleTap, $element);
+            $scope.$on('$destroy', function () {
+                // Clean up - unbind drag gesture handler
+                $ionicGesture.off(tapGesture, 'tap', handleTap);
+            });
+        }
+    }
+})
+
