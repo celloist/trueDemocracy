@@ -114,6 +114,65 @@ angular.module('starter.services', [])
         }
 }])
 
+// TODO
+    .factory('Users', ['auth', '$http', function(auth, $http) {
+
+        var users = [];
+
+        return {
+            all : function($scope){
+                $http.get('https://sleepy-reaches-3503.herokuapp.com/api/users/' + 'auth0|55008768f9ffe30c45cf506b' + '/polls')
+                    .success(function(data){
+                        $scope.myPolls = data;
+                    })
+                    .error(function(data){
+                        console.log(data);
+                    });
+                return polls;
+            },
+            remove: function(poll, $scope, loadingIndicator) {
+                $http.delete('https://sleepy-reaches-3503.herokuapp.com/api/polls/' + poll._id + '?userId='+'auth0|55008768f9ffe30c45cf506b')
+                    .success(function(status){
+                        $scope.myPolls.splice($scope.myPolls.indexOf(poll), 1);
+                        $scope.hasSelectedPoll = false;
+                        loadingIndicator.hide();
+                    })
+                    .error(function(status){
+                        console.log(status);
+                    });
+            },
+            get : function(pollId){
+                return polls[pollId];
+            },
+            insert : function(poll, $scope, loadingIndicator){
+                if (poll.title != "") {
+                    $http.post('https://sleepy-reaches-3503.herokuapp.com/api/users/' + 'auth0|55008768f9ffe30c45cf506b' + '/polls', {title: poll.title, shortDescription: poll.shortDescription, longDescription: poll.longDescription})
+                        .success(function (data) {
+                            loadingIndicator.hide();
+                            $scope.pollModal.hide();
+                            poll.title = "";
+                            $scope.myPolls.push(data.data);
+                        })
+                        .error(function (data) {
+                            //TODO flash error that something went wrong
+                            console.log(data);
+                        })
+                }
+            },
+            update : function(poll, $scope, loadingIndicator){
+                $http.put('https://sleepy-reaches-3503.herokuapp.com/polls/' + poll._id, {title: poll.title, shortDescription: poll.shortDescription, longDescription: poll.longDescription})
+                    .success(function(data){
+                        loadingIndicator.hide();
+                        $scope.pollEditModal.hide();
+                    })
+                    .error(function (data) {
+                        //TODO flash error that something went wrong
+                        console.log(data);
+                    })
+            }
+        }
+    }])
+
 .factory('Socket', function ($rootScope) {
         var socket = io.connect('https://sleepy-reaches-3503.herokuapp.com');
         return {
@@ -210,8 +269,8 @@ angular.module('starter.services', [])
 }])
 
     .directive('map', function() {
-        var lat = 52.67593;
-        var long = 6.881388;
+        var lat = 51.6915227;
+        var long = 5.2962623;
         navigator.geolocation.getCurrentPosition(function (pos) {
             console.log('Got pos', pos);
             lat = pos.coords.latitude
