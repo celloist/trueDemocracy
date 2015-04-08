@@ -117,13 +117,18 @@ angular.module('starter.services', [])
 
     .factory('Users', ['auth', '$http', function(auth, $http) {
 
-        var users = [];
-
+        var users= [];
         return {
             all : function($scope){
                 $http.get('https://sleepy-reaches-3503.herokuapp.com/api/users')
                     .success(function(data){
+                        users = data;
                         $scope.users = data;
+                        console.log("ausers = "+data);
+                        for(var i = 0;i<data.length;i++)
+                        {
+                            console.log("something here"+i);
+                        }
                     })
                     .error(function(data){
                         console.log(data);
@@ -131,7 +136,7 @@ angular.module('starter.services', [])
                 return users;
             },
             update : function(user, $scope){
-                $http.put('https://sleepy-reaches-3503.herokuapp.com/api/users/'+auth.profile.user_id, {lat: user.lat, long: user.long})
+                $http.put('https://sleepy-reaches-3503.herokuapp.com/api/users/'+auth.profile.user_id, {lat: user["lat"], long: user["long"]})
                     .success(function(data){
                     console.log("succes " + data);
                         return "it worked";
@@ -242,7 +247,6 @@ angular.module('starter.services', [])
         var lat = 51.6915227;
         var long = 5.2962623;
         navigator.geolocation.getCurrentPosition(function (pos) {
-            console.log('Got pos', pos.coords.longitude);
             lat = pos.coords.latitude
             long = pos.coords.longitude
         }, function (error) {

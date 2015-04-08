@@ -391,7 +391,6 @@ angular.module('starter.controllers', [])
             $scope.map = map;
         };
 
-        var map = $scope.map;
 
 
         $scope.centerOnMe = function () {
@@ -436,32 +435,76 @@ angular.module('starter.controllers', [])
 
 
             navigator.geolocation.getCurrentPosition(function (pos) {
-                console.log('Got pos', pos.coords.latitude);
-                    user.long = pos.coords.longitude;
-                    user.lat = pos.coords.latitude;
 
-                var check = Users.update(user,$scope);
-                    console.log(check);
+                console.log('Got pos', pos.coords.latitude);
+                    user["long"] = pos.coords.longitude;
+                    user["lat"] = pos.coords.latitude;
+                console.log('user long ='+user["long"]+' user lat ='+user["lat"]);
+
+                Users.update(user,$scope);
+
 
                // var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
+                var marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude),
+                    map: $scope.map,
+                    title: 'Me!'
+                });
 
                 $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
-
-                $scope.map.event.addListener(map, 'click', function(event) {
-                    marker = new google.maps.Marker({
-                        position: new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude),
-                        map: map
-                    });
-                    $scope.loading.hide();
-                });
-                $scope.loading.hide();
+                $ionicLoading.hide();
 
 
             }, function (error) {
                 alert('Unable to get location: ' + error.message);
             });
         };
+
+
+            $scope.markMe = function() {
+                console.log("Marking");
+                if (!$scope.map) {
+                    return;
+                }
+                Users.all($scope);
+
+                $scope.$watchCollection('users',function(newUsers,oldUsers){
+                    $scope.users=newUsers;
+                });
+
+                console.log("user="+$scope.users);
+                for(var i = 0;i<$scope.users.length;i++)
+                {
+                    console.log($scope.users[i].lat);
+                }
+
+
+                //$scope.users.forEach(function(user) {
+                //    console.log("testeteste="+user.lat);
+                //});
+                //$scope.loading = $ionicLoading.show({
+                //    content: 'Getting current location...',
+                //    showBackdrop: false
+                //});
+
+                navigator.geolocation.getCurrentPosition(function (pos) {
+                    console.log('Got pos', pos.coords.latitude);
+                    for(var i = 0;i<$scope.users.length;i++) {
+
+                        marker = new google.maps.Marker({
+                            position: new google.maps.LatLng($scope.users[i].lat, $scope.users[i].long),
+                            map: $scope.map,
+                            title: "not me"
+                        })
+                    }
+
+                }, function (error) {
+                    alert('Unable to get location: ' + error.message);
+                });
+               // $ionicLoading.hide();
+            }
     });
+
 
 
