@@ -12,7 +12,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     .config(function (authProvider) {
         authProvider.init({
             domain: 'ronaldvanduren.auth0.com',
-            clientID: 'SLyfg8BYEP9RuyhHX4waO7hpAqEyytfQ',
+            clientID: 'FyLTiPLyCtwnGblxCZeiUSQVrCSVTUCb',
             loginStage: 'login'
         });
     })
@@ -35,6 +35,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
   });
 })
 
+
 .run(function($rootScope, auth, store, jwtHelper, $location) {
         // This events gets triggered on refresh or URL change
         $rootScope.$on('$locationChangeStart', function() {
@@ -54,6 +55,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             }
         });
     })
+
 
 .config(function($stateProvider, $urlRouterProvider, authProvider, $httpProvider,
                  jwtInterceptorProvider) {

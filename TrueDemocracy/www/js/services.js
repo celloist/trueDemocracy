@@ -9,7 +9,7 @@ angular.module('starter.services', [])
 
         return {
             all : function($scope){
-                $http.get('https://sleepy-reaches-3503.herokuapp.com/api/users/auth0|55008768f9ffe30c45cf506b/polls')
+                $http.get('https://sleepy-reaches-3503.herokuapp.com/api/users/' + auth.profile.userId + '/polls')
                     .success(function(data){
                         $scope.myPolls = data;
                     })
