@@ -447,7 +447,7 @@ angular.module('starter.controllers', [])
 
 
                 $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
-                
+
                 $scope.map.event.addListener(map, 'click', function(event) {
                     marker = new google.maps.Marker({
                         position: new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude),
