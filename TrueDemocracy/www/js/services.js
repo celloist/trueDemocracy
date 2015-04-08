@@ -6,10 +6,10 @@ angular.module('starter.services', [])
 .factory('MyPolls', ['auth', '$http', function(auth, $http) {
 
         var polls = [];
-
         return {
             all : function($scope){
-                $http.get('https://sleepy-reaches-3503.herokuapp.com/api/users/' + 'balbla' + '/polls')
+                console.log(auth.profile.user_id);
+                $http.get('https://sleepy-reaches-3503.herokuapp.com/api/users/' + auth.profile.user_id + '/polls')
                     .success(function(data){
                         $scope.myPolls = data;
                     })
@@ -19,7 +19,7 @@ angular.module('starter.services', [])
                 return polls;
             },
             remove: function(poll, $scope, loadingIndicator) {
-                $http.delete('https://sleepy-reaches-3503.herokuapp.com/api/polls/' + poll._id + '?userId=auth0|55008768f9ffe30c45cf506b')
+                $http.delete('https://sleepy-reaches-3503.herokuapp.com/api/polls/' + poll._id + '?userId=' + auth.profile.user_id)
                     .success(function(status){
                         $scope.myPolls.splice($scope.myPolls.indexOf(poll), 1);
                         $scope.hasSelectedPoll = false;
@@ -34,7 +34,7 @@ angular.module('starter.services', [])
             },
             insert : function(poll, $scope, loadingIndicator){
                 if (poll.title != "") {
-                    $http.post('https://sleepy-reaches-3503.herokuapp.com/api/users/'+'balbla'+'/polls', {title: poll.title, shortDescription: poll.shortDescription, longDescription: poll.longDescription})
+                    $http.post('https://sleepy-reaches-3503.herokuapp.com/api/users/'+auth.profile.user_id+'/polls', {title: poll.title, shortDescription: poll.shortDescription, longDescription: poll.longDescription})
                         .success(function (data) {
                             loadingIndicator.hide();
                             $scope.pollModal.hide();
@@ -48,7 +48,7 @@ angular.module('starter.services', [])
                 }
             },
             update : function(poll, $scope, loadingIndicator){
-                $http.put('https://sleepy-reaches-3503.herokuapp.com/polls/' + poll._id, {title: poll.title, shortDescription: poll.shortDescription, longDescription: poll.longDescription})
+                $http.put('https://sleepy-reaches-3503.herokuapp.com/api/polls/' + poll._id, {title: poll.title, shortDescription: poll.shortDescription, longDescription: poll.longDescription})
                     .success(function(data){
                         loadingIndicator.hide();
                         $scope.pollEditModal.hide();
@@ -67,7 +67,7 @@ angular.module('starter.services', [])
 
         return {
             all : function($scope){
-                $http.get('https://sleepy-reaches-3503.herokuapp.com/api/polls?userId='+'balbla'+'&showOwnPolls='+store.get('showOwnPolls'))
+                $http.get('https://sleepy-reaches-3503.herokuapp.com/api/polls?userId='+auth.profile.user_id+'&showOwnPolls='+store.get('showOwnPolls'))
                     .success(function(data){
                         polls = data.data;
                         $scope.polls = polls;
@@ -93,7 +93,7 @@ angular.module('starter.services', [])
             },
             addRating : function(poll, ratingType, $scope){
                console.log(ratingType);
-               $http.put('https://sleepy-reaches-3503.herokuapp.com/api/polls/' + poll._id + '/addRating?userId='+auth.profile.userId, {ratingType: ratingType})
+               $http.put('https://sleepy-reaches-3503.herokuapp.com/api/polls/' + poll._id + '/addRating?userId='+auth.profile.user_id, {ratingType: ratingType})
 
                     .success(function(status){
                         //switch(ratingType){
@@ -131,14 +131,13 @@ angular.module('starter.services', [])
                 return users;
             },
             update : function(user, $scope){
-                $http.put('https://sleepy-reaches-3503.herokuapp.com/api/users/'+'balbla', {lat: user.lat, long: user.long})
+                $http.put('https://sleepy-reaches-3503.herokuapp.com/api/users/'+auth.profile.user_id, {lat: user.lat, long: user.long})
                     .success(function(data){
                     console.log("succes " + data);
                         return "it worked";
                     })
                     .error(function (data) {
-                        return "something went wrong"
-                        console.log(data);
+                        return "something went wrong";
                     })
             }
         }
