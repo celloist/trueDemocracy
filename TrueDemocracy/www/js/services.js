@@ -9,7 +9,7 @@ angular.module('starter.services', [])
 
         return {
             all : function($scope){
-                $http.get('https://sleepy-reaches-3503.herokuapp.com/api/users/' + auth.profile.userId + '/polls')
+                $http.get('https://sleepy-reaches-3503.herokuapp.com/api/users/' + 'balbla' + '/polls')
                     .success(function(data){
                         $scope.myPolls = data;
                     })
@@ -34,7 +34,7 @@ angular.module('starter.services', [])
             },
             insert : function(poll, $scope, loadingIndicator){
                 if (poll.title != "") {
-                    $http.post('https://sleepy-reaches-3503.herokuapp.com/api/users/'+auth.profile.userId+'/polls', {title: poll.title, shortDescription: poll.shortDescription, longDescription: poll.longDescription})
+                    $http.post('https://sleepy-reaches-3503.herokuapp.com/api/users/'+'balbla'+'/polls', {title: poll.title, shortDescription: poll.shortDescription, longDescription: poll.longDescription})
                         .success(function (data) {
                             loadingIndicator.hide();
                             $scope.pollModal.hide();
@@ -67,7 +67,7 @@ angular.module('starter.services', [])
 
         return {
             all : function($scope){
-                $http.get('https://sleepy-reaches-3503.herokuapp.com/api/polls?userId='+auth.profile.userId+'&showOwnPolls='+store.get('showOwnPolls'))
+                $http.get('https://sleepy-reaches-3503.herokuapp.com/api/polls?userId='+'balbla'+'&showOwnPolls='+store.get('showOwnPolls'))
                     .success(function(data){
                         polls = data.data;
                         $scope.polls = polls;
@@ -131,7 +131,7 @@ angular.module('starter.services', [])
                 return users;
             },
             update : function(user, $scope){
-                $http.put('https://sleepy-reaches-3503.herokuapp.com/api/users/'+auth.profile.userId, {lat: user.lat, long: user.long})
+                $http.put('https://sleepy-reaches-3503.herokuapp.com/api/users/'+'balbla', {lat: user.lat, long: user.long})
                     .success(function(data){
                     console.log("succes " + data);
                         return "it worked";
