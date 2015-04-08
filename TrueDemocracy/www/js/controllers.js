@@ -453,6 +453,7 @@ angular.module('starter.controllers', [])
                         position: new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude),
                         map: map
                     });
+                    $scope.loading.hide();
                 });
                 $scope.loading.hide();
 
