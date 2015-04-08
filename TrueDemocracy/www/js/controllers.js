@@ -390,7 +390,7 @@ angular.module('starter.controllers', [])
         $scope.mapCreated = function(map) {
             $scope.map = map;
         };
-        var bounds = new google.maps.LatLngBounds();
+
         var map = $scope.map;
 
 
@@ -433,6 +433,8 @@ angular.module('starter.controllers', [])
             //
             //    });
 
+
+
             navigator.geolocation.getCurrentPosition(function (pos) {
                 console.log('Got pos', pos.coords.latitude);
                     user.long = pos.coords.longitude;
@@ -441,8 +443,17 @@ angular.module('starter.controllers', [])
                 var check = Users.update(user,$scope);
                     console.log(check);
 
+               // var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
 
                 $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
+
+                $scope.map.event.addListener(map, 'click', function(event) {
+                    marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude),
+                        map: map
+                    });
+                });
                 $scope.loading.hide();
 
 

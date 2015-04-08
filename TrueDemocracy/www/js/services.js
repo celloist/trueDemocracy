@@ -276,7 +276,8 @@ angular.module('starter.services', [])
                 if (document.readyState === "complete") {
                     initialize();
                 } else {
-                    google.maps.event.addDomListener(window, 'load', initialize);
+                    //google.maps.event.addDomListener(window, 'load', initialize);
+                    ionic.Platform.ready(initialize);
                 }
             }
         }
